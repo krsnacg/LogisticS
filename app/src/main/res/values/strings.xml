@@ -1,0 +1,9 @@
+<resources>
+    <string name="app_name">LogisticS</string>
+    <string name="login_button_text">Iniciar Sesión</string>
+    <string name="password">Contraseña</string>
+    <string name="username">Usuario</string>
+    <string name="cancel_button_desc">Cancelar</string>
+    <string name="quantity_desc">Cantidad</string>
+    <string name="login_title">Iniciar sesión</string>
+</resources>
