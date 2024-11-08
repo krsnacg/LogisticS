@@ -23,20 +23,25 @@ import androidx.compose.ui.unit.dp
 import androidx.navigation.NavController
 import com.example.logistics.R
 import com.example.logistics.model.Product
+import com.example.logistics.model.ProductRequest
 
 @Composable
 fun AddProductScreen(navController: NavController, viewModel: ProductViewModel = ProductViewModel()) {
-    var producto = remember { Product() }
+    var producto = remember { mutableStateOf(Product()) }
 
     ProductForm(
-        product = producto,
+        product = producto.value,
         optionName = "Registrar",
-        onProductChange = { updatedProduct -> producto = updatedProduct },
+        onProductChange = { updatedProduct -> producto.value = updatedProduct },
         onCancelClick = {
             navController.popBackStack()
         },
         onSaveClick = {
-            viewModel.addProduct(producto)
+//            viewModel.addProduct(producto.value)
+//            viewModel.onProductSelected(producto.value)
+//            navController.navigate("lote")
+            viewModel.generateLotes(producto.value.nombreProducto, producto.value.cantidad.toInt())
+            viewModel.onProductSelected(producto.value)
             navController.navigate("lote")
         },
         buttonText = "Generar Lotes"

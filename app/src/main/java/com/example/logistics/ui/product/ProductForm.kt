@@ -9,7 +9,9 @@ import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
+import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.text.KeyboardOptions
+import androidx.compose.foundation.verticalScroll
 import androidx.compose.material3.Button
 import androidx.compose.material3.Text
 import androidx.compose.material3.TextField
@@ -24,6 +26,7 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.unit.dp
+import androidx.compose.ui.unit.sp
 import com.example.logistics.R
 import com.example.logistics.model.Product
 
@@ -46,16 +49,23 @@ fun ProductForm(
     var descripcion by remember { mutableStateOf(product.descripcion) }
     var cantidad by remember { mutableStateOf(product.cantidad) }
 
+    val categorias = listOf("Analgesico","Anestesico", "Ansiolitico")
+    val tipos = listOf("Tableta","Solucion Oral", "Elixir","Jarabe")
+
+    val scrollState = rememberScrollState()
+
     Column(
         modifier = Modifier
             .fillMaxSize()
-            .padding(16.dp),
+            .padding(16.dp)
+            .verticalScroll(scrollState),
         verticalArrangement = Arrangement.Center,
         horizontalAlignment = Alignment.CenterHorizontally
     ) {
         Text(
             text = optionName + " Producto",
-            fontWeight = FontWeight.Bold
+            fontWeight = FontWeight.Bold,
+            fontSize = 32.sp
         )
         TextField(
             value = codigo,
@@ -74,20 +84,24 @@ fun ProductForm(
             label = { Text("Nombre del Producto") }
         )
         Spacer(modifier = Modifier.height(8.dp))
-        TextField(
-            value = categoria,
-            onValueChange = {
-                categoria = it
-                onProductChange(product.copy(categoria = it)) },
-            label = { Text("Categoría") }
+        DropdownField(
+            label = "Categoria",
+            options = categorias,
+            selectedOption = categoria,
+            onOptionSelected = { selected ->
+                categoria = selected
+                onProductChange(product.copy(categoria = selected))
+            }
         )
         Spacer(modifier = Modifier.height(8.dp))
-        TextField(
-            value = tipo,
-            onValueChange = {
-                tipo = it
-                onProductChange(product.copy(tipo = it)) },
-            label = { Text("Tipo") }
+        DropdownField(
+            label = "Tipo",
+            options = tipos,
+            selectedOption = tipo,
+            onOptionSelected = { selected ->
+                tipo = selected
+                onProductChange(product.copy(tipo = selected))
+            },
         )
         Spacer(modifier = Modifier.height(8.dp))
         TextField(

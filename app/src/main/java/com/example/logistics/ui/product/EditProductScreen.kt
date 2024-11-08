@@ -30,20 +30,6 @@ import androidx.navigation.NavController
 @Composable
 fun EditProductScreen(navController: NavController, viewModel: ProductViewModel = ProductViewModel()) {
 
-//    var producto = remember { Product() }
-//    ProductForm(
-//        product = producto,
-//        optionName = "Actualizar",
-//        onProductChange = { updatedProduct -> producto = updatedProduct },
-//        onCancelClick = {
-//            navController.popBackStack()
-//        },
-//        onSaveClick = {
-//            viewModel.addProducto(producto)
-//            navController.navigate("lote")
-//        },
-//        buttonText = "Generar Lotes"
-//    )
     val productos = viewModel.productos
     val selectedProduct = viewModel.selectedProduct
 

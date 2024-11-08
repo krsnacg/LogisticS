@@ -8,6 +8,7 @@ import com.example.logistics.ui.login.LoginScreen
 import com.example.logistics.ui.menu.MenuScreen
 import com.example.logistics.ui.product.AddProductScreen
 import com.example.logistics.ui.product.EditProductScreen
+import com.example.logistics.ui.product.LoteScreen
 
 
 @Composable
@@ -19,6 +20,6 @@ fun AppNavigation() {
         composable(route = "menu") { MenuScreen(navController) }
         composable(route = "addProduct") { AddProductScreen(navController) }
         composable(route = "editProduct") { EditProductScreen(navController) }
-        composable(route = "lote") {  }
+        composable(route = "lote") { LoteScreen(navController)}
     }
 }
