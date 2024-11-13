@@ -16,9 +16,11 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.navigation.NavController
+import com.example.logistics.ui.product.ProductViewModel
 
 @Composable
-fun MenuScreen(navController: NavController) {
+fun MenuScreen(navController: NavController, productViewModel: ProductViewModel) {
+
     Column(
         modifier = Modifier
             .fillMaxSize()
@@ -29,7 +31,10 @@ fun MenuScreen(navController: NavController) {
         Text(text = "Productos", fontWeight = FontWeight.SemiBold, fontSize = 32.sp)
         Spacer(modifier = Modifier.height(16.dp))
         Button(
-            onClick = { navController.navigate("addProduct") },
+            onClick = {
+                productViewModel.getProductLastCode()
+                navController.navigate("addProduct")
+            },
             modifier = Modifier.fillMaxWidth()
         ) {
             Text("Registrar Productos")
@@ -41,6 +46,6 @@ fun MenuScreen(navController: NavController) {
         ) {
             Text("Editar Productos")
         }
-        // Agrega más botones para otros módulos de gestión
+        // Agregar más botones para otros módulos de gestión
     }
 }

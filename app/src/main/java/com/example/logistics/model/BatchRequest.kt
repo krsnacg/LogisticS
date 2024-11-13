@@ -1,9 +1,11 @@
 package com.example.logistics.model
 
-data class LoteRequest(
+import com.google.gson.annotations.SerializedName
+
+data class BatchRequest(
     val code: String,
     val operativeStatus: String,
-    val disponibilityState: String,
+    @SerializedName("disponibilityState") val availabilityState: String,
     val securityState: String,
     val stock: Int,
     val expiredDate: String

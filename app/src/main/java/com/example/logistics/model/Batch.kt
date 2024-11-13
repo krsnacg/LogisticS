@@ -1,6 +1,8 @@
 package com.example.logistics.model
 
-data class Lote(
+import java.util.Date
+
+data class Batch(
     val codigoLote: String = "",
     val estadoOperativo: String = "",
     val estadoDisponibilidad: String = "",

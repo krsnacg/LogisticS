@@ -1,6 +1,7 @@
 package com.example.logistics.service
 import com.example.logistics.model.Product
 import com.example.logistics.model.ProductRequest
+import com.example.logistics.model.ProductResponse
 import retrofit2.Response
 import retrofit2.http.Body
 import retrofit2.http.GET
@@ -8,13 +9,19 @@ import retrofit2.http.POST
 import retrofit2.http.PUT
 
 interface ProductApiService {
-    @GET("listar")
-    suspend fun listarProductos(): Response<List<Product>>
+    @GET("producto/listar")
+    suspend fun listProducts(): Response<List<ProductRequest>>
 
-    @POST("guardar-p")
-    suspend fun createProductoWithLots(@Body producto: ProductRequest): Response<Product>
+    @POST("producto/guardar-p")
+    suspend fun saveProductWithBatches(@Body product: ProductRequest): Response<ProductResponse>
 
-    @PUT("actualizar-p")
-    suspend fun updateProductoWithLots(@Body producto: ProductRequest): Response<Product>
+    @PUT("producto/actualizar-p")
+    suspend fun updateProductWithBatches(@Body product: ProductRequest): Response<ProductRequest>
+
+    @GET("producto/last-code")
+    suspend fun getProductLastCode(): Response<Map<String, String>>
+
+    @GET("lotes/last-code")
+    suspend fun getBatchLastCode(): Response<Map<String,String>>
 
 }

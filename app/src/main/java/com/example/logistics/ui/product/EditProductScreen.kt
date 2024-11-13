@@ -17,6 +17,7 @@ import androidx.compose.material3.DropdownMenuItem
 import androidx.compose.material3.Text
 import androidx.compose.material3.TextField
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
@@ -25,13 +26,16 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.unit.dp
+import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavController
 
 @Composable
-fun EditProductScreen(navController: NavController, viewModel: ProductViewModel = ProductViewModel()) {
+fun EditProductScreen(navController: NavController, viewModel: ProductViewModel = viewModel()) {
 
     val productos = viewModel.productos
     val selectedProduct = viewModel.selectedProduct
+
+    val codigoState by viewModel.codeState.collectAsState()
 
     Column(
         modifier = Modifier
@@ -70,9 +74,17 @@ fun EditProductScreen(navController: NavController, viewModel: ProductViewModel 
 
         selectedProduct?.let { producto ->
             ProductForm(
+                code = codigoState,
                 product = producto,
                 optionName = "Actualizar",
-                onProductChange = { updatedProduct -> viewModel.onProductSelected(updatedProduct) },
+                onNameChange = { viewModel.updateProductName(it) },
+                onCategoryChange = { viewModel.updateProductCategory(it) },
+                onTypeChange = { viewModel.updateProductType(it) },
+                onPriceChange = { viewModel.updateProductPrice(it) },
+                onConcentrationChange = { viewModel.updateProductConcentration(it) },
+                onPresentationChange = { viewModel.updateProductPresentation(it) },
+                onDescriptionChange = { viewModel.updateProductDescription(it) },
+                onQuantityChange = { viewModel.updateProductQuantity(it) },
                 onCancelClick = { navController.popBackStack() },
                 onSaveClick = {
                     viewModel.updateProduct(producto)

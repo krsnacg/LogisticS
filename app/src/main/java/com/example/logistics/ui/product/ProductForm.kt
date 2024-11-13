@@ -1,10 +1,12 @@
 package com.example.logistics.ui.product
 
 import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
@@ -13,6 +15,7 @@ import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material3.Button
+import androidx.compose.material3.OutlinedTextField
 import androidx.compose.material3.Text
 import androidx.compose.material3.TextField
 import androidx.compose.runtime.Composable
@@ -32,128 +35,126 @@ import com.example.logistics.model.Product
 
 @Composable
 fun ProductForm(
+    code: String,
     product: Product,
     optionName: String,
-    onProductChange: (Product) -> Unit,
+    onNameChange: (String) -> Unit,
+    onCategoryChange: (String) -> Unit,
+    onTypeChange: (String) -> Unit,
+    onPriceChange: (String) -> Unit,
+    onConcentrationChange: (String) -> Unit,
+    onPresentationChange: (String) -> Unit,
+    onDescriptionChange: (String) -> Unit,
+    onQuantityChange: (String) -> Unit,
     onCancelClick: () -> Unit,
     onSaveClick: () -> Unit,
     buttonText: String
 ) {
     var codigo by remember { mutableStateOf(product.codigo) }
-    var nombreProducto by remember { mutableStateOf(product.nombreProducto) }
-    var categoria by remember { mutableStateOf(product.categoria) }
-    var tipo by remember { mutableStateOf(product.tipo) }
-    var precio by remember { mutableStateOf(product.precio) }
-    var concentracion by remember { mutableStateOf(product.concentracion) }
-    var presentacion by remember { mutableStateOf(product.presentacion) }
-    var descripcion by remember { mutableStateOf(product.descripcion) }
-    var cantidad by remember { mutableStateOf(product.cantidad) }
 
     val categorias = listOf("Analgesico","Anestesico", "Ansiolitico")
     val tipos = listOf("Tableta","Solucion Oral", "Elixir","Jarabe")
 
     val scrollState = rememberScrollState()
 
-    Column(
+    Box(
         modifier = Modifier
             .fillMaxSize()
             .padding(16.dp)
-            .verticalScroll(scrollState),
-        verticalArrangement = Arrangement.Center,
-        horizontalAlignment = Alignment.CenterHorizontally
     ) {
-        Text(
-            text = optionName + " Producto",
-            fontWeight = FontWeight.Bold,
-            fontSize = 32.sp
-        )
-        TextField(
-            value = codigo,
-            onValueChange = {
-                codigo = it
-                onProductChange(product.copy(codigo = it))
-            },
-            label = { Text("Código") }
-        )
-        Spacer(modifier = Modifier.height(8.dp))
-        TextField(
-            value = nombreProducto,
-            onValueChange = {
-                nombreProducto = it
-                onProductChange(product.copy(nombreProducto = it)) },
-            label = { Text("Nombre del Producto") }
-        )
-        Spacer(modifier = Modifier.height(8.dp))
-        DropdownField(
-            label = "Categoria",
-            options = categorias,
-            selectedOption = categoria,
-            onOptionSelected = { selected ->
-                categoria = selected
-                onProductChange(product.copy(categoria = selected))
+        Column(
+            horizontalAlignment = Alignment.CenterHorizontally,
+            verticalArrangement = Arrangement.SpaceBetween
+        ) {
+            Text(
+                text = optionName + " Producto",
+                fontWeight = FontWeight.Bold,
+                fontSize = 32.sp
+            )
+            Column(
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .padding(16.dp)
+                    .verticalScroll(scrollState),
+                verticalArrangement = Arrangement.Center,
+                horizontalAlignment = Alignment.CenterHorizontally
+            ) {
+                OutlinedTextField(
+                    value = product.codigo,
+                    onValueChange = {},
+                    readOnly = true,
+                    label = { Text("Código") }
+                )
+                Spacer(modifier = Modifier.height(8.dp))
+                TextField(
+                    value = product.nombreProducto,
+                    onValueChange = onNameChange,
+                    label = { Text("Nombre del Producto") }
+                )
+                Spacer(modifier = Modifier.height(8.dp))
+                DropdownField(
+                    label = "Categoria",
+                    options = categorias,
+                    selectedOption = product.categoria,
+                    onOptionSelected = onCategoryChange
+                )
+                Spacer(modifier = Modifier.height(8.dp))
+                DropdownField(
+                    label = "Tipo",
+                    options = tipos,
+                    selectedOption = product.tipo,
+                    onOptionSelected = onTypeChange
+                )
+                Spacer(modifier = Modifier.height(8.dp))
+                TextField(
+                    value = product.precio,
+                    onValueChange = onPriceChange,
+                    label = { Text("Precio") },
+                    keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Number)
+                )
+                Spacer(modifier = Modifier.height(8.dp))
+                TextField(
+                    value = product.concentracion,
+                    onValueChange = onConcentrationChange,
+                    label = { Text("Concentración") }
+                )
+                Spacer(modifier = Modifier.height(8.dp))
+                TextField(
+                    value = product.presentacion,
+                    onValueChange = onPresentationChange,
+                    label = { Text("Presentación") }
+                )
+                Spacer(modifier = Modifier.height(8.dp))
+                TextField(
+                    value = product.descripcion,
+                    onValueChange = onDescriptionChange,
+                    label = { Text("Descripción") }
+                )
+                Spacer(modifier = Modifier.height(8.dp))
+                TextField(
+                    value = product.cantidad,
+                    onValueChange = onQuantityChange,
+                    label = { Text(stringResource(R.string.quantity_desc)) },
+                    keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Number)
+                )
+                Spacer(modifier = Modifier.height(16.dp))
+                Row(
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .padding(top = 16.dp),
+                    horizontalArrangement = Arrangement.Center
+                ) {
+                    Button(onClick = onCancelClick) {
+                        Text(text = stringResource(R.string.cancel_button_desc))
+                    }
+                    Spacer(modifier = Modifier.width(16.dp))
+                    Button(onClick = onSaveClick) {
+                        Text(buttonText)
+                    }
+                }
             }
-        )
-        Spacer(modifier = Modifier.height(8.dp))
-        DropdownField(
-            label = "Tipo",
-            options = tipos,
-            selectedOption = tipo,
-            onOptionSelected = { selected ->
-                tipo = selected
-                onProductChange(product.copy(tipo = selected))
-            },
-        )
-        Spacer(modifier = Modifier.height(8.dp))
-        TextField(
-            value = precio,
-            onValueChange = {
-                precio = it
-                onProductChange(product.copy(precio = it)) },
-            label = { Text("Precio") },
-            keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Number)
-        )
-        Spacer(modifier = Modifier.height(8.dp))
-        TextField(
-            value = concentracion,
-            onValueChange = {
-                concentracion = it
-                onProductChange(product.copy(concentracion = it)) },
-            label = { Text("Concentración") }
-        )
-        Spacer(modifier = Modifier.height(8.dp))
-        TextField(
-            value = presentacion,
-            onValueChange = {
-                presentacion = it
-                onProductChange(product.copy(presentacion = it)) },
-            label = { Text("Presentación") }
-        )
-        Spacer(modifier = Modifier.height(8.dp))
-        TextField(
-            value = descripcion,
-            onValueChange = {
-                descripcion = it
-                onProductChange(product.copy(descripcion = it)) },
-            label = { Text("Descripción") }
-        )
-        Spacer(modifier = Modifier.height(8.dp))
-        TextField(
-            value = cantidad,
-            onValueChange = {
-                cantidad = it
-                onProductChange(product.copy(cantidad = it)) },
-            label = { Text(stringResource(R.string.quantity_desc)) },
-            keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Number)
-        )
-        Spacer(modifier = Modifier.height(16.dp))
-        Row {
-            Button(onClick = onCancelClick) {
-                Text(text = stringResource(R.string.cancel_button_desc))
-            }
-            Spacer(modifier = Modifier.width(16.dp))
-            Button(onClick = onSaveClick) {
-                Text(buttonText)
-            }
+
         }
     }
+
 }
