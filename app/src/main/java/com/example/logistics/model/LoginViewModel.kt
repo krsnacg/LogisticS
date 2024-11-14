@@ -22,7 +22,7 @@ class LoginViewModel:  ViewModel() {
 
     init {
         val retrofit = Retrofit.Builder()
-            .baseUrl("https://d0dd-38-25-122-7.ngrok-free.app/")
+            .baseUrl("http://10.0.2.2:8100/")
             .addConverterFactory(GsonConverterFactory.create())
             .build()
 

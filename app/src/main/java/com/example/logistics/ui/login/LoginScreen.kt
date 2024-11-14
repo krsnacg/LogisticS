@@ -134,6 +134,14 @@ fun LoginScreen(
         animationSpec = spring(dampingRatio = Spring.DampingRatioMediumBouncy)
     )
 
+    LaunchedEffect(uiState.token) {
+        if (uiState.token.isNotEmpty()) {
+            navController.navigate("menu") {
+                popUpTo("login") { inclusive = true } // Limpia el historial para evitar volver a la pantalla de inicio de sesión
+            }
+        }
+    }
+
     Box(
         modifier = Modifier
             .fillMaxSize()
