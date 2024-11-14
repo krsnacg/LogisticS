@@ -9,7 +9,6 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.text.KeyboardOptions
@@ -38,6 +37,7 @@ fun ProductForm(
     code: String,
     product: Product,
     optionName: String,
+    isFormValid: Boolean,
     onNameChange: (String) -> Unit,
     onCategoryChange: (String) -> Unit,
     onTypeChange: (String) -> Unit,
@@ -51,6 +51,14 @@ fun ProductForm(
     buttonText: String
 ) {
     var codigo by remember { mutableStateOf(product.codigo) }
+
+//    val isFormValid = product.nombreProducto.isNotBlank() &&
+//            product.categoria.isNotBlank() &&
+//            product.tipo.isNotBlank() &&
+//            product.precio.isNotBlank() &&
+//            product.concentracion.isNotBlank() &&
+//            product.presentacion.isNotBlank() &&
+//            product.cantidad.isNotBlank()
 
     val categorias = listOf("Analgesico","Anestesico", "Ansiolitico")
     val tipos = listOf("Tableta","Solucion Oral", "Elixir","Jarabe")
@@ -148,7 +156,10 @@ fun ProductForm(
                         Text(text = stringResource(R.string.cancel_button_desc))
                     }
                     Spacer(modifier = Modifier.width(16.dp))
-                    Button(onClick = onSaveClick) {
+                    Button(
+                        onClick = onSaveClick,
+                        enabled = isFormValid
+                    ) {
                         Text(buttonText)
                     }
                 }
@@ -156,5 +167,4 @@ fun ProductForm(
 
         }
     }
-
 }
