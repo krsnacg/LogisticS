@@ -12,7 +12,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
 import com.example.logistics.ui.navigation.AppNavigation
-import com.example.logistics.ui.theme.LogisticSTheme
+
 
 class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -29,6 +29,7 @@ class MainActivity : ComponentActivity() {
 //            }
             AppNavigation()
         }
+
     }
 }
 
@@ -43,7 +44,5 @@ fun Greeting(name: String, modifier: Modifier = Modifier) {
 @Preview(showBackground = true)
 @Composable
 fun GreetingPreview() {
-    LogisticSTheme {
-        Greeting("Android")
-    }
+
 }
