@@ -9,7 +9,6 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.text.KeyboardOptions
@@ -38,6 +37,8 @@ fun ProductForm(
     code: String,
     product: Product,
     optionName: String,
+    isEditable: Boolean = false,
+    isFormValid: Boolean,
     onNameChange: (String) -> Unit,
     onCategoryChange: (String) -> Unit,
     onTypeChange: (String) -> Unit,
@@ -83,32 +84,39 @@ fun ProductForm(
                     value = product.codigo,
                     onValueChange = {},
                     readOnly = true,
+                    enabled = false,
                     label = { Text("Código") }
                 )
                 Spacer(modifier = Modifier.height(8.dp))
                 TextField(
                     value = product.nombreProducto,
                     onValueChange = onNameChange,
-                    label = { Text("Nombre del Producto") }
+                    enabled = isEditable,
+                    readOnly = !isEditable,
+                    label = { Text("Nombre del Producto") },
                 )
                 Spacer(modifier = Modifier.height(8.dp))
                 DropdownField(
                     label = "Categoria",
                     options = categorias,
                     selectedOption = product.categoria,
-                    onOptionSelected = onCategoryChange
+                    onOptionSelected = onCategoryChange,
+                    enabled = isEditable
                 )
                 Spacer(modifier = Modifier.height(8.dp))
                 DropdownField(
                     label = "Tipo",
                     options = tipos,
                     selectedOption = product.tipo,
-                    onOptionSelected = onTypeChange
+                    onOptionSelected = onTypeChange,
+                    enabled = isEditable
                 )
                 Spacer(modifier = Modifier.height(8.dp))
                 TextField(
                     value = product.precio,
                     onValueChange = onPriceChange,
+                    enabled = isEditable,
+                    readOnly = !isEditable,
                     label = { Text("Precio") },
                     keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Number)
                 )
@@ -116,6 +124,8 @@ fun ProductForm(
                 TextField(
                     value = product.concentracion,
                     onValueChange = onConcentrationChange,
+                    enabled = isEditable,
+                    readOnly = !isEditable,
                     label = { Text("Concentración") }
                 )
                 Spacer(modifier = Modifier.height(8.dp))
@@ -148,7 +158,10 @@ fun ProductForm(
                         Text(text = stringResource(R.string.cancel_button_desc))
                     }
                     Spacer(modifier = Modifier.width(16.dp))
-                    Button(onClick = onSaveClick) {
+                    Button(
+                        onClick = onSaveClick,
+                        enabled = isFormValid
+                    ) {
                         Text(buttonText)
                     }
                 }
@@ -156,5 +169,4 @@ fun ProductForm(
 
         }
     }
-
 }

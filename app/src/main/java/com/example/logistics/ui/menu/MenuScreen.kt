@@ -41,7 +41,10 @@ fun MenuScreen(navController: NavController, productViewModel: ProductViewModel)
         }
         Spacer(modifier = Modifier.height(16.dp))
         Button(
-            onClick = { navController.navigate("editProduct") },
+            onClick = {
+                productViewModel.getAllProducts()
+                navController.navigate("editProduct")
+            },
             modifier = Modifier.fillMaxWidth()
         ) {
             Text("Editar Productos")

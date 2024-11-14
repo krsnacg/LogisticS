@@ -2,9 +2,6 @@ package com.example.logistics.ui.product
 
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
-import androidx.compose.foundation.gestures.awaitEachGesture
-import androidx.compose.foundation.gestures.awaitFirstDown
-import androidx.compose.foundation.gestures.waitForUpOrCancellation
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Spacer
@@ -16,8 +13,8 @@ import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.ArrowDropDown
 import androidx.compose.material.icons.filled.DateRange
+import androidx.compose.material3.AlertDialog
 import androidx.compose.material3.DatePicker
-import androidx.compose.material3.DatePickerDialog
 import androidx.compose.material3.DropdownMenu
 import androidx.compose.material3.DropdownMenuItem
 import androidx.compose.material3.ExperimentalMaterial3Api
@@ -37,12 +34,10 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.shadow
-import androidx.compose.ui.input.pointer.PointerEventPass
-import androidx.compose.ui.input.pointer.pointerInput
+import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.window.Popup
-import androidx.lifecycle.viewmodel.compose.viewModel
 import com.example.logistics.model.Batch
 import java.text.SimpleDateFormat
 import java.util.Date
@@ -51,6 +46,7 @@ import java.util.Locale
 @Composable
 fun BatchForm(
     batch: Batch,
+    isEditable: Boolean = false,
     onOperativeStateChange: (String) -> Unit, // TODO: Añadir parámetro tipo Int
     onAvailabilityStateChange: (String) -> Unit,
     onSecurityStateChange: (String) -> Unit,
@@ -71,6 +67,7 @@ fun BatchForm(
         TextField(
             value = batch.codigoLote,
             onValueChange = {},
+            enabled = false,
             readOnly = true,
             label = { Text("Código Batch") }
         )
@@ -79,40 +76,46 @@ fun BatchForm(
             label = "Estado Operativo",
             options = opcionesEstadoOperativo,
             selectedOption = batch.estadoOperativo,
-            onOptionSelected = onOperativeStateChange
+            onOptionSelected = onOperativeStateChange,
+            enabled = true
         )
         Spacer(modifier = Modifier.height(8.dp))
         DropdownField(
             label = "Estado Disponibilidad",
             options = opcionesEstadoDisponibilidad,
             selectedOption = batch.estadoDisponibilidad,
-            onOptionSelected = onAvailabilityStateChange
+            onOptionSelected = onAvailabilityStateChange,
+            enabled = true
         )
         Spacer(modifier = Modifier.height(8.dp))
         DropdownField(
             label = "Estado Seguridad",
             options = opcionesEstadoSeguridad,
             selectedOption = batch.estadoSeguridad,
-            onOptionSelected = onSecurityStateChange
+            onOptionSelected = onSecurityStateChange,
+            enabled = true
         )
         Spacer(modifier = Modifier.height(8.dp))
         TextField(
             value = batch.nombreProducto,
             onValueChange = {},
-            label = { Text("Nombre del Producto") },
-            readOnly = true
+            enabled = false,
+            readOnly = true,
+            label = { Text("Nombre del Producto") }
         )
         Spacer(modifier = Modifier.height(8.dp))
         TextField(
             value = batch.stock,
             onValueChange = {},
-            label = { Text("Stock") },
+            enabled = false,
             readOnly = true,
+            label = { Text("Stock") },
             keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Number)
         )
         Spacer(modifier = Modifier.height(8.dp))
         DatePickerDocked(
             selectedDate = batch.fechaVencimiento,
+            isEnabled = isEditable,
             onDateSelected = onDateChange
         )
     }
@@ -123,7 +126,8 @@ fun DropdownField(
     label: String,
     options: List<String>,
     selectedOption: String,
-    onOptionSelected: (String) -> Unit // TODO: Añadir parámetro tipo Int
+    onOptionSelected: (String) -> Unit, // TODO: Añadir parámetro tipo Int
+    enabled: Boolean
 ) {
     var expanded by remember { mutableStateOf(false) }
 
@@ -133,6 +137,7 @@ fun DropdownField(
             onValueChange = { },
             label = { Text(label) },
             readOnly = true,
+            enabled = enabled,
             trailingIcon = {
                 Icon(
                     Icons.Default.ArrowDropDown, contentDescription = null,
@@ -155,23 +160,45 @@ fun DropdownField(
     }
 }
 
+
+@Composable
+fun AlertDialogExample(
+    onDismissRequest: () -> Unit,
+    onConfirmation: () -> Unit,
+    dialogTitle: String,
+    dialogText: String,
+    icon: ImageVector,
+) {
+    AlertDialog(
+        icon = { Icon(icon, contentDescription = "Example Icon") },
+        title = { Text(text = dialogTitle) },
+        text = { Text(text = dialogText) },
+        onDismissRequest = { onDismissRequest() },
+        confirmButton = {
+            TextButton(onClick = { onConfirmation() }) {
+                Text("Confirm")
+            }
+        }
+    )
+}
+
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun DatePickerDocked(
     selectedDate: String,
+    isEnabled: Boolean,
     onDateSelected: (String) -> Unit
 ) {
     var showDatePicker by remember { mutableStateOf(value = false) }
     val datePickerState = rememberDatePickerState()
 
-    Box(
-        modifier = Modifier.fillMaxWidth()
-    ) {
+    Box{
         OutlinedTextField(
             value = selectedDate,
             onValueChange = { },
-            label = { Text("Fecha de Vencimiento") },
+            enabled = isEnabled,
             readOnly = true,
+            label = { Text("Fecha de Vencimiento") },
             trailingIcon = {
                 IconButton(onClick = { showDatePicker = !showDatePicker }) {
                     Icon(

@@ -4,7 +4,7 @@ import com.google.gson.annotations.SerializedName
 
 data class ProductResponse(
     @SerializedName("idProducto") val code: String,
-    @SerializedName("idCategoria") val category: String?,
+    @SerializedName("idCategoria") val category: Categoria,
     @SerializedName("idFormaFarmaceutica") val formaFarmaceutica: FormaFarmaceutica,
     @SerializedName("idAlmacen") val almacen: String,
     @SerializedName("nombre") val name: String,
@@ -17,4 +17,9 @@ data class ProductResponse(
 data class FormaFarmaceutica(
     @SerializedName("id_forma_farmaceutica") val id: String,
     @SerializedName("forma") val forma: String
+)
+
+data class Categoria(
+    @SerializedName("id_categoria") val id: String,
+    @SerializedName("categoria") val name: String
 )

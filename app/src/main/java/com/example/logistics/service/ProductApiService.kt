@@ -1,5 +1,4 @@
 package com.example.logistics.service
-import com.example.logistics.model.Product
 import com.example.logistics.model.ProductRequest
 import com.example.logistics.model.ProductResponse
 import retrofit2.Response
@@ -10,13 +9,13 @@ import retrofit2.http.PUT
 
 interface ProductApiService {
     @GET("producto/listar")
-    suspend fun listProducts(): Response<List<ProductRequest>>
+    suspend fun getAllProducts(): Response<List<ProductResponse>>
 
     @POST("producto/guardar-p")
     suspend fun saveProductWithBatches(@Body product: ProductRequest): Response<ProductResponse>
 
-    @PUT("producto/actualizar-p")
-    suspend fun updateProductWithBatches(@Body product: ProductRequest): Response<ProductRequest>
+//    @PUT("producto/actualizar-p")
+//    suspend fun updateProductWithBatches(@Body product: ProductRequest): Response<ProductRequest>
 
     @GET("producto/last-code")
     suspend fun getProductLastCode(): Response<Map<String, String>>

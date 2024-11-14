@@ -1,6 +1,7 @@
 package com.example.logistics.data
 
 import com.example.logistics.model.ApiResponse
+import com.example.logistics.model.Product
 import com.example.logistics.model.ProductRequest
 import com.example.logistics.service.ProductApiService
 
@@ -8,6 +9,7 @@ interface ProductRepository {
     suspend fun getProductLastCode(): String
     suspend fun getBatchLastCode(): String
     suspend fun saveProductAndBatches(productRequest: ProductRequest): ApiResponse<String>
+    suspend fun getAllProducts(): ApiResponse<List<Product>>
 }
 
 class NetworkProductRepository(
@@ -23,18 +25,21 @@ class NetworkProductRepository(
         val response = productApiService.saveProductWithBatches(productRequest)
         return if (response.isSuccessful) {
             val productCode = response.body()?.code ?: "ERROR"
-            ApiResponse(
-                status = "success",
-                message = null,
-                data = productCode
-            )
+            ApiResponse(status = "success", message = null, data = productCode)
         } else {
-            ApiResponse(
-                status = "error",
-                message = response.message(),
-                data = null
-            )
+            ApiResponse(status = "error", message = response.message(), data = null)
         }
     }
+
+    override suspend fun getAllProducts(): ApiResponse<List<Product>> {
+        val response = productApiService.getAllProducts()
+        return if (response.isSuccessful) {
+            val productList = response.body()?.map { it.toProduct() }
+            ApiResponse(status = "success", message = null, data = productList)
+        } else {
+            ApiResponse(status = "error", message = response.message(), data = null)
+        }
+    }
+
 }
 

@@ -6,4 +6,5 @@
     <string name="cancel_button_desc">Cancelar</string>
     <string name="quantity_desc">Cantidad</string>
     <string name="login_title">Iniciar sesión</string>
+    <string name="edit_button">Edit</string>
 </resources>

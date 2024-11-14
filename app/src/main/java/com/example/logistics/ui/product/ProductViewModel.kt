@@ -1,13 +1,10 @@
 package com.example.logistics.ui.product
 
 import android.util.Log
-import androidx.compose.runtime.MutableState
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateListOf
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.setValue
-import androidx.lifecycle.LiveData
-import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.viewModelScope
@@ -17,7 +14,6 @@ import com.example.logistics.ProductApplication
 import com.example.logistics.data.ProductRepository
 import com.example.logistics.model.Batch
 import com.example.logistics.model.Product
-import com.example.logistics.service.ProductAPI
 import com.example.logistics.model.ProductRequest
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
@@ -27,27 +23,19 @@ import java.io.IOException
 import androidx.lifecycle.ViewModelProvider.AndroidViewModelFactory.Companion.APPLICATION_KEY
 import com.example.logistics.model.BatchRequest
 import java.text.SimpleDateFormat
-import java.util.Date
 import java.util.Locale
-import kotlin.math.exp
 
 
 class ProductViewModel(private val productRepository: ProductRepository) : ViewModel() {
 
-    val productos = mutableStateListOf<Product>()
-    var selectedProduct by mutableStateOf<Product?>(value = null)
-
-    val products: MutableState<List<ProductRequest>> = mutableStateOf(emptyList())
-    val lots: MutableState<List<Batch>> = mutableStateOf(emptyList())
-
-    private val _productos = MutableLiveData<List<Product>>()
-    val productoss: LiveData<List<Product>> get() = _productos
-
-    private val _lotes = MutableLiveData<List<Batch>>()
-    val lotes: LiveData<List<Batch>> get() = _lotes
-
     private val _codeState = MutableStateFlow(value = "")
     val codeState: StateFlow<String> = _codeState.asStateFlow()
+
+    private val _saveState = MutableStateFlow<Result<String>?>(null)
+    val saveState: StateFlow<Result<String>?> = _saveState.asStateFlow()
+
+    private val _productList = MutableStateFlow<List<Product>>(value = emptyList())
+    val productList: StateFlow<List<Product>> = _productList.asStateFlow()
 
     private var batchCode: String = ""
 
@@ -57,9 +45,8 @@ class ProductViewModel(private val productRepository: ProductRepository) : ViewM
     var batchList = mutableStateListOf<Batch>()
         private set
 
-    var batch by mutableStateOf(value = Batch())
-        private set
-
+//    var batch by mutableStateOf(value = Batch())
+//        private set
 
     companion object {
         val Factory: ViewModelProvider.Factory = viewModelFactory {
@@ -71,28 +58,23 @@ class ProductViewModel(private val productRepository: ProductRepository) : ViewM
         }
     }
 
-    fun updateProduct(producto: Product) {
+    fun updateProduct() {
         viewModelScope.launch {
-            // Implementa la lógica de actualizar el producto (solicitud PUT)
-            // productos.addAll(/**/)
+
         }
     }
 
-    fun onProductSelected(producto: Product) {
-        selectedProduct = producto
-    }
-
-    fun listarProductos() {
+    fun getAllProducts() {
         viewModelScope.launch {
             try {
-                val response = ProductAPI.api.listProducts()
-                if (response.isSuccessful) {
-                    //_productos.value = response.body()
+                val response = productRepository.getAllProducts()
+                if (response.status == "success" && response.data?.isNotEmpty() == true) {
+                    _productList.value = response.data
                 } else {
-                    Log.e("Error", "Error al listar productos: ${response.code()}")
+                    Log.e("Error", "Error obtaining products: ${response.message}")
                 }
             } catch (e: Exception) {
-                Log.e("Exception", e.message.toString())
+                Log.e("ExceptionGettingAllProducts", e.message.toString())
             }
         }
     }
@@ -102,12 +84,16 @@ class ProductViewModel(private val productRepository: ProductRepository) : ViewM
             try {
                 val response = productRepository.saveProductAndBatches(buildProductSaveRequest())
                 if (response.status == "success") {
+                    _saveState.value = Result.success("Producto guardado exitosamente")
+                    resetProduct()
                     Log.d("Success", "Producto guardado exitosamente $response")
                 } else {
+                    _saveState.value = Result.failure(Exception("Error al guardar el producto"))
                     Log.e("Error", "Error al guardar producto: $response")
                 }
             } catch (e: Exception) {
-                Log.e("Exception", e.message.toString())
+                _saveState.value = Result.failure(e)
+                Log.e("ExceptionAtSavingProduct", e.message.toString())
             }
         }
     }
@@ -117,6 +103,7 @@ class ProductViewModel(private val productRepository: ProductRepository) : ViewM
             try {
 //                _codeState.value = incrementCode(productRepository.getLastCodeProducto())
 //                Log.d("viewModelGetCodeSuccess", _codeState.value)
+                if (isProductNotEmpty()) resetProduct()
                 product = product.copy(codigo = incrementCode(productRepository.getProductLastCode()))
                 Log.d("viewModelGetCodeSuccess", product.codigo)
             } catch (e: IOException) {
@@ -187,6 +174,14 @@ class ProductViewModel(private val productRepository: ProductRepository) : ViewM
         )
     }
 
+    private fun resetProduct() {
+        product = Product()
+    }
+
+    fun resetSaveState() {
+        _saveState.value = null
+    }
+
     private fun incrementCode(code: String): String {
         val prefix = code.take(2)
         val number = code.drop(2).toIntOrNull() ?:0
@@ -194,7 +189,7 @@ class ProductViewModel(private val productRepository: ProductRepository) : ViewM
         return "$prefix${newNumber.toString().padStart(4,'0')}"
     }
 
-    fun convertDateFormat(inputDate: String): String {
+    private fun convertDateFormat(inputDate: String): String {
         val inputFormat = SimpleDateFormat("MM/dd/yyyy", Locale.getDefault())
         val outputFormat = SimpleDateFormat("yyyy-MM-dd", Locale.getDefault())
         return try {
@@ -203,6 +198,47 @@ class ProductViewModel(private val productRepository: ProductRepository) : ViewM
         } catch (e: Exception) {
             inputDate // retorna la fecha original si hay error
         }
+    }
+
+    fun isProductComplete(): Boolean {
+        return product.codigo.isNotBlank() &&
+                product.nombreProducto.isNotBlank() &&
+                product.categoria.isNotBlank() &&
+                product.tipo.isNotBlank() &&
+                product.precio.isNotBlank() &&
+                product.concentracion.isNotBlank() &&
+                product.presentacion.isNotBlank() &&
+                product.descripcion.isNotBlank() &&
+                product.cantidad.isNotBlank()
+    }
+
+    fun areAllBatchesComplete(): Boolean {
+        return batchList.all { batch ->
+            batch.codigoLote.isNotBlank() &&
+                    batch.estadoOperativo.isNotBlank() &&
+                    batch.estadoDisponibilidad.isNotBlank() &&
+                    batch.estadoSeguridad.isNotBlank() &&
+                    batch.nombreProducto.isNotBlank() &&
+                    batch.stock.isNotBlank() &&
+                    batch.fechaVencimiento.isNotBlank()
+        }
+    }
+
+    private fun isProductNotEmpty(): Boolean {
+        return product.codigo.isNotBlank() ||
+                product.nombreProducto.isNotBlank() ||
+                product.categoria.isNotBlank() ||
+                product.tipo.isNotBlank() ||
+                product.precio.isNotBlank() ||
+                product.concentracion.isNotBlank() ||
+                product.presentacion.isNotBlank() ||
+                product.descripcion.isNotBlank() ||
+                product.cantidad.isNotBlank()
+    }
+
+    fun editProductSelected(index: Int) {
+        // Copiar el producto seleccionado, de la lista de productos a la variable product
+        product = _productList.value[index]
     }
 
     fun updateProductName(productName: String) {
