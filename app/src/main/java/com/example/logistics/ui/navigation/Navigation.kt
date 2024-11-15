@@ -26,7 +26,7 @@ fun AppNavigation() {
             MenuScreen(navController, loginViewModel, productViewModel)
         }
         composable(route = "addProduct") { AddProductScreen(navController, productViewModel) }
-        composable(route = "editProduct") { EditProductScreen(navController) }
+        composable(route = "editProduct") { EditProductScreen(navController, productViewModel) }
         composable(route = "lote") { BatchScreen(navController, productViewModel) }
     }
 }

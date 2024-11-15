@@ -71,6 +71,7 @@ fun MenuScreen(navController: NavController, loginViewModel: LoginViewModel, pro
                     empleado = uiState.empleado,
                     menuItems = menuItems,
                     selectedItem = selectedItem.value,
+                    navController = navController,
                     onItemSelected = { menuItem ->
                         selectedItem.value = menuItem
                         scope.launch {
@@ -101,7 +102,7 @@ fun MenuScreen(navController: NavController, loginViewModel: LoginViewModel, pro
                         }
                     },
                     actions = {
-                        IconButton(onClick = { /* Implementar logout */ }) {
+                        IconButton(onClick = { loginViewModel.logout(navController) }) {
                             Icon(Icons.Default.ExitToApp, contentDescription = "Logout")
                         }
                     },
@@ -129,6 +130,7 @@ private fun DrawerContent(
     empleado: EmpleadoDto?,
     menuItems: List<MenuItem>,
     selectedItem: MenuItem,
+    navController: NavController,
     onItemSelected: (MenuItem) -> Unit,
     onCloseDrawer: () -> Unit
 ) {
@@ -207,7 +209,10 @@ private fun DrawerContent(
                 modifier = Modifier
                     .fillMaxWidth()
                     .padding(horizontal = 12.dp, vertical = 4.dp),
-                onClick = { onItemSelected(item) },
+                onClick = {
+                    onItemSelected(item)
+                    navController.navigate(item.route) // Navega a la ruta específica de cada item
+                },
                 color = if (isSelected) {
                     MaterialTheme.colorScheme.primaryContainer.copy(alpha = 0.1f)
                 } else {

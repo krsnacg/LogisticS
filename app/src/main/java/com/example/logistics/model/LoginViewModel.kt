@@ -3,6 +3,7 @@ package com.example.logistics.model
 import android.util.Log
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import androidx.navigation.NavController
 import com.example.logistics.data.LoginRequest
 import com.example.logistics.data.UiState
 import com.example.logistics.data.repository.EmpleadoRepository
@@ -80,6 +81,23 @@ class LoginViewModel:  ViewModel() {
             }
         } else {
             _uiState.value = _uiState.value.copy(error = "Error al extraer email del token")
+        }
+    }
+
+    fun logout(navController: NavController) {
+        viewModelScope.launch {
+            // Limpiamos el estado
+            _uiState.value = _uiState.value.copy(
+                token = "",
+                empleado = null,
+                isLoading = false,
+                error = ""
+            )
+
+            // Navegamos al login y limpiamos el back stack
+            navController.navigate("login") {
+                popUpTo(navController.graph.startDestinationId) { inclusive = true }
+            }
         }
     }
 }

@@ -30,7 +30,7 @@ import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavController
 
 @Composable
-fun EditProductScreen(navController: NavController, viewModel: ProductViewModel = viewModel()) {
+fun EditProductScreen(navController: NavController, viewModel: ProductViewModel ) {
 
     val productos = viewModel.productos
     val selectedProduct = viewModel.selectedProduct
