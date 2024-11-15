@@ -104,7 +104,7 @@ fun LoginScreen(
     var email by remember { mutableStateOf("") }
     var password by remember { mutableStateOf("") }
     var isPasswordVisible by remember { mutableStateOf(false) }
-
+    var showEmpleadoDialog by remember { mutableStateOf(false) }
     // Animaciones de entrada
     val screenHeight = LocalConfiguration.current.screenHeightDp.dp
     val contentTransition = remember {
@@ -135,10 +135,13 @@ fun LoginScreen(
     )
 
     LaunchedEffect(uiState.token) {
-        if (uiState.token.isNotEmpty()) {
+        /*if (uiState.token.isNotEmpty()) {
             navController.navigate("menu") {
                 popUpTo("login") { inclusive = true } // Limpia el historial para evitar volver a la pantalla de inicio de sesión
             }
+        }*/
+        if (uiState.empleado != null) {
+            showEmpleadoDialog = true
         }
     }
 

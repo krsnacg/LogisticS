@@ -5,8 +5,11 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.logistics.data.LoginRequest
 import com.example.logistics.data.UiState
+import com.example.logistics.data.repository.EmpleadoRepository
 import com.example.logistics.objects.ApiClient
 import com.example.logistics.service.ApiService
+import com.example.logistics.service.EmpleadoService
+import com.example.logistics.util.TokenUtils
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
@@ -17,60 +20,66 @@ import retrofit2.converter.gson.GsonConverterFactory
 class LoginViewModel:  ViewModel() {
     private val _uiState = MutableStateFlow(UiState())
     val uiState: StateFlow<UiState> = _uiState.asStateFlow()
-
     private val apiService: ApiService
+    private val empleadoService: EmpleadoService
+    private val empleadoRepository: EmpleadoRepository
 
     init {
         val retrofit = Retrofit.Builder()
             .baseUrl("http://10.0.2.2:8100/")
             .addConverterFactory(GsonConverterFactory.create())
             .build()
-
         apiService = retrofit.create(ApiService::class.java)
+
+        val retrofitv2 = Retrofit.Builder()
+            .baseUrl("http://10.0.2.2:9000/")
+            .addConverterFactory(GsonConverterFactory.create())
+            .build()
+
+        empleadoService = retrofitv2.create(EmpleadoService::class.java)
+        empleadoRepository = EmpleadoRepository(empleadoService)
     }
 
-    suspend fun login(email: String, password: String) {
-        try {
+    fun login(email: String, password: String) {
+        viewModelScope.launch {
             _uiState.value = _uiState.value.copy(isLoading = true, error = "")
-            val loginResponse = apiService.login(LoginRequest(email, password))
-
-            if (loginResponse.isSuccessful && loginResponse.body() != null) {
-                val token = loginResponse.body()?.token ?: ""
-                _uiState.value = _uiState.value.copy(token = token)
-                fetchDemoMessage(token)
-            } else {
-                _uiState.value = _uiState.value.copy(
-                    error = "Error de login: ${loginResponse.errorBody()?.string()}"
-                )
+            try {
+                val loginResponse = apiService.login(LoginRequest(email, password))
+                if (loginResponse.isSuccessful && loginResponse.body() != null) {
+                    val token = loginResponse.body()?.token ?: ""
+                    _uiState.value = _uiState.value.copy(token = token)
+                    fetchEmpleadoData(token)
+                } else {
+                    _uiState.value = _uiState.value.copy(
+                        error = "Error de login: ${loginResponse.errorBody()?.string()}"
+                    )
+                }
+            } catch (e: Exception) {
+                _uiState.value = _uiState.value.copy(error = "Error: ${e.message}")
+            } finally {
+                _uiState.value = _uiState.value.copy(isLoading = false)
             }
-        } catch (e: Exception) {
-            _uiState.value = _uiState.value.copy(error = "Error: ${e.message}")
-        } finally {
-            _uiState.value = _uiState.value.copy(isLoading = false)
         }
     }
 
-    private suspend fun fetchDemoMessage(token: String) {
-        try {
-            val bearerToken = "Bearer $token"
-            Log.d("API_CALL", "Llamando a demo con token: $bearerToken")
-
-            val demoResponse = apiService.getDemo(bearerToken)
-
-            if (demoResponse.isSuccessful && demoResponse.body() != null) {
-                val message = demoResponse.body()?.message ?: ""
-                _uiState.value = _uiState.value.copy(message = message)
-            } else {
-                Log.e("API_ERROR", "Error demo: ${demoResponse.errorBody()?.string()}")
-                _uiState.value = _uiState.value.copy(
-                    error = "Error al obtener demo: ${demoResponse.errorBody()?.string()}"
-                )
+    private suspend fun fetchEmpleadoData(token: String) {
+        val email = TokenUtils.extractEmailFromToken(token)
+        if (email != null) {
+            try {
+                val response = empleadoRepository.fetchEmpleado(token, email)
+                if (response.isSuccessful && response.body() != null) {
+                    val empleado = response.body()!!
+                    _uiState.value = _uiState.value.copy(error = "si obtuve datos: ${empleado.dni}",empleado = empleado)
+                } else {
+                    _uiState.value = _uiState.value.copy(
+                        error = "Error al obtener datos del empleado: ${response.errorBody()?.string()}"
+                    )
+                }
+            } catch (e: Exception) {
+                _uiState.value = _uiState.value.copy(error = "Error: ${e.message}")
             }
-        } catch (e: Exception) {
-            Log.e("API_ERROR", "Exception en demo", e)
-            _uiState.value = _uiState.value.copy(
-                error = "Error al obtener mensaje demo: ${e.message}"
-            )
+        } else {
+            _uiState.value = _uiState.value.copy(error = "Error al extraer email del token")
         }
     }
 }
