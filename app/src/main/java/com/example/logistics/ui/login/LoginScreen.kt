@@ -135,13 +135,10 @@ fun LoginScreen(
     )
 
     LaunchedEffect(uiState.token) {
-        /*if (uiState.token.isNotEmpty()) {
+        if (uiState.token.isNotEmpty()) {
             navController.navigate("menu") {
                 popUpTo("login") { inclusive = true } // Limpia el historial para evitar volver a la pantalla de inicio de sesión
             }
-        }*/
-        if (uiState.empleado != null) {
-            showEmpleadoDialog = true
         }
     }
 
