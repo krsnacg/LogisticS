@@ -23,7 +23,7 @@ fun AppNavigation() {
     NavHost(navController = navController, startDestination = "login") {
         composable(route = "login") { LoginScreen(navController, loginViewModel) }
         composable(route = "menu") {
-            MenuScreen(navController, loginViewModel, productViewModel)
+            MenuScreen(navController, loginViewModel/*, productViewModel*/)
         }
         composable(route = "addProduct") { AddProductScreen(navController, productViewModel) }
         composable(route = "editProduct") { EditProductScreen(navController, productViewModel) }

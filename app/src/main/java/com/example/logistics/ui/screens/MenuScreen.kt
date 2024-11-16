@@ -50,7 +50,7 @@ data class MenuItem(
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun MenuScreen(navController: NavController, loginViewModel: LoginViewModel, productViewModel: ProductViewModel) {
+fun MenuScreen(navController: NavController, loginViewModel: LoginViewModel) {
     val uiState by loginViewModel.uiState.collectAsState()
 
     val drawerState = rememberDrawerState(initialValue = DrawerValue.Closed)
@@ -115,7 +115,7 @@ fun MenuScreen(navController: NavController, loginViewModel: LoginViewModel, pro
                     )
                 )
             }
-        ) { paddingValues -> Text("Hola", modifier = Modifier.padding(paddingValues))
+        ) { paddingValues -> DashboardContent(paddingValues = paddingValues)
             //Espacio para el dashboard
         }
     }
