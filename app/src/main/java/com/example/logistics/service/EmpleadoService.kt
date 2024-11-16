@@ -1,6 +1,6 @@
 package com.example.logistics.service
 
-import com.example.logistics.data.EmpleadoDto
+import com.example.logistics.model.EmpleadoDto
 import retrofit2.Response
 import retrofit2.http.GET
 import retrofit2.http.Path

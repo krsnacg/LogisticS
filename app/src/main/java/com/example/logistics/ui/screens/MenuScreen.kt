@@ -1,4 +1,4 @@
-package com.example.logistics.ui.menu
+package com.example.logistics.ui.screens
 
 import androidx.compose.animation.core.*
 import androidx.compose.foundation.*
@@ -14,9 +14,7 @@ import androidx.compose.ui.draw.scale
 import androidx.compose.ui.graphics.Brush
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.vector.ImageVector
-import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.unit.dp
-import androidx.compose.ui.unit.sp
 import kotlinx.coroutines.launch
 
 import androidx.compose.foundation.layout.Arrangement
@@ -26,7 +24,6 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
-import androidx.compose.material3.Button
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
@@ -34,18 +31,22 @@ import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.text.font.FontWeight
-import androidx.compose.ui.unit.dp
-import androidx.compose.ui.unit.sp
 import androidx.navigation.NavController
-import com.example.logistics.data.EmpleadoDto
+import com.example.logistics.model.EmpleadoDto
 import com.example.logistics.model.LoginViewModel
+import com.example.logistics.model.MenuItem
+import com.example.logistics.ui.components.DrawerContent
+import com.example.logistics.ui.dashboard.DashboardContent
 import com.example.logistics.ui.product.ProductViewModel
 
+
+/*
 data class MenuItem(
     val title: String,
     val icon: ImageVector,
     val route: String
 )
+*/
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
@@ -124,6 +125,7 @@ fun MenuScreen(navController: NavController, loginViewModel: LoginViewModel, pro
     }
 }
 
+/*
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 private fun DrawerContent(
@@ -257,6 +259,7 @@ private fun DrawerContent(
     }
 }
 
+/*
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 private fun DrawerButton(
@@ -291,7 +294,7 @@ private fun DrawerButton(
         }
     }
 }
-
+/*
 @Composable
 private fun DashboardContent(
     modifier: Modifier = Modifier,
@@ -355,6 +358,7 @@ private fun DashboardContent(
         }
     }
 }
+
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
@@ -421,6 +425,8 @@ private fun DashboardCard(
         }
     }
 }
+
+ */
 /*
     Column(
         modifier = Modifier
@@ -458,3 +464,4 @@ private fun DashboardCard(
     }
     */
 
+*/

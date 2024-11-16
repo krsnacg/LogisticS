@@ -1,5 +1,7 @@
 package com.example.logistics.data
 
+import com.example.logistics.model.EmpleadoDto
+
 data class UiState(
     val token: String = "",
     val message: String = "",

@@ -1,4 +1,4 @@
-package com.example.logistics.data
+package com.example.logistics.model
 
 data class EmpleadoDto(
     val idempleado: String,
