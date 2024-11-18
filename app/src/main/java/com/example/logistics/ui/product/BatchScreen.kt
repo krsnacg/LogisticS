@@ -1,18 +1,26 @@
 package com.example.logistics.ui.product
 
 
+import android.util.Log
+import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
+import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.itemsIndexed
 import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.automirrored.filled.Send
 import androidx.compose.material.icons.filled.Check
 import androidx.compose.material.icons.filled.Clear
 import androidx.compose.material3.Button
+import androidx.compose.material3.HorizontalDivider
+import androidx.compose.material3.Icon
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
@@ -37,6 +45,9 @@ fun BatchScreen(
 
     var showDialog by remember { mutableStateOf(false) }
     val saveState by viewModel.saveState.collectAsState()
+    val editableState by viewModel.editableState.collectAsState()
+    val isLoading by viewModel.isLoading.collectAsState()
+    Log.d("BatchScreen", "isLoading: $isLoading")
 
     LaunchedEffect(saveState) {
         saveState?.let {
@@ -44,15 +55,18 @@ fun BatchScreen(
         }
     }
 
-    Column(
-        modifier = Modifier.padding(16.dp),
-        horizontalAlignment = Alignment.CenterHorizontally
+    Box(
+        modifier = Modifier
+            .fillMaxSize()
+            .padding(16.dp)
     ) {
         LazyColumn {
             itemsIndexed(viewModel.batchList) { index, batch ->
+                HorizontalDivider(thickness = 2.dp)
+                Text(text = "Lote ${index + 1}")
                 BatchForm(
                     batch = batch,
-                    isEditable = true,
+                    isEditable = editableState,
                     onOperativeStateChange = {
                         viewModel.updateBatchOperativeState(index, it)
                     },
@@ -62,25 +76,41 @@ fun BatchScreen(
                     onSecurityStateChange = { viewModel.updateBatchSecurityState(index, it) },
                     onDateChange = { viewModel.updateBatchDate(index, it) }
                 )
-                Spacer(modifier = Modifier.height(16.dp))
+                Spacer(modifier = Modifier.height(8.dp))
+
             }
         }
 
         Spacer(modifier = Modifier.height(16.dp))
 
-        Row {
-            Button(onClick = { navController.popBackStack() }) {
-                Text(text = stringResource(R.string.cancel_button_desc))
-            }
-            Spacer(modifier = Modifier.width(16.dp))
+        Row(
+            modifier = Modifier
+                .fillMaxWidth()
+                .align(Alignment.BottomEnd)
+                .padding(top = 16.dp),
+            horizontalArrangement = Arrangement.End
+        ) {
+//            Button(onClick = { navController.popBackStack() }) {
+//                Text(text = stringResource(R.string.cancel_button_desc))
+//            }
+//            Spacer(modifier = Modifier.width(16.dp))
             Button(
                 onClick = {
-                    viewModel.saveProductAndBatches()
-                    viewModel.getProductLastCode()
+                    if (editableState) {
+                        viewModel.saveProductAndBatches()
+                        viewModel.getProductLastCode()
+                    }
+                    else {
+                        viewModel.updateProductAndBatches()
+                        viewModel.getAllProducts()
+                    }
+                    viewModel.toggleEditable(true)
                 },
                 enabled = viewModel.areAllBatchesComplete()
             ) {
-                Text("Guardar")
+                Icon(imageVector = Icons.AutoMirrored.Default.Send, contentDescription = null)
+                Spacer(modifier = Modifier.width(4.dp))
+                Text(text = stringResource(R.string.save_button))
             }
         }
 
@@ -103,5 +133,6 @@ fun BatchScreen(
                 icon = if (saveState?.isSuccess == true) Icons.Default.Check else Icons.Default.Clear
             )
         }
+        LoadingIndicator(isLoading = isLoading)
     }
 }

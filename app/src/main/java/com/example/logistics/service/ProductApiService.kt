@@ -14,8 +14,8 @@ interface ProductApiService {
     @POST("producto/guardar-p")
     suspend fun saveProductWithBatches(@Body product: ProductRequest): Response<ProductResponse>
 
-//    @PUT("producto/actualizar-p")
-//    suspend fun updateProductWithBatches(@Body product: ProductRequest): Response<ProductRequest>
+    @PUT("producto/actualizar-p")
+    suspend fun updateProductWithBatches(@Body product: ProductRequest): Response<ProductRequest>
 
     @GET("producto/last-code")
     suspend fun getProductLastCode(): Response<Map<String, String>>

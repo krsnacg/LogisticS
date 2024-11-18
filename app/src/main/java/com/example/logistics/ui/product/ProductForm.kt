@@ -1,5 +1,6 @@
 package com.example.logistics.ui.product
 
+import android.util.Log
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -13,10 +14,13 @@ import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.foundation.verticalScroll
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.Add
 import androidx.compose.material3.Button
+import androidx.compose.material3.CircularProgressIndicator
+import androidx.compose.material3.Icon
 import androidx.compose.material3.OutlinedTextField
 import androidx.compose.material3.Text
-import androidx.compose.material3.TextField
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
@@ -31,12 +35,13 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.example.logistics.R
 import com.example.logistics.model.Product
+import com.example.logistics.ui.theme.AppTypography
 
 @Composable
 fun ProductForm(
-    code: String,
+    // code: String,
     product: Product,
-    optionName: String,
+    // optionName: String,
     isEditable: Boolean = false,
     isFormValid: Boolean,
     onNameChange: (String) -> Unit,
@@ -49,12 +54,12 @@ fun ProductForm(
     onQuantityChange: (String) -> Unit,
     onCancelClick: () -> Unit,
     onSaveClick: () -> Unit,
-    buttonText: String
 ) {
     var codigo by remember { mutableStateOf(product.codigo) }
 
     val categorias = listOf("Analgesico","Anestesico", "Ansiolitico")
     val tipos = listOf("Tableta","Solucion Oral", "Elixir","Jarabe")
+    val stocks = listOf("200", "400", "600", "800", "1000")
 
     val scrollState = rememberScrollState()
 
@@ -67,11 +72,6 @@ fun ProductForm(
             horizontalAlignment = Alignment.CenterHorizontally,
             verticalArrangement = Arrangement.SpaceBetween
         ) {
-            Text(
-                text = optionName + " Producto",
-                fontWeight = FontWeight.Bold,
-                fontSize = 32.sp
-            )
             Column(
                 modifier = Modifier
                     .fillMaxWidth()
@@ -82,18 +82,25 @@ fun ProductForm(
             ) {
                 OutlinedTextField(
                     value = product.codigo,
+//                    textStyle = AppTypography.bodyMedium,
                     onValueChange = {},
-                    readOnly = true,
                     enabled = false,
-                    label = { Text("Código") }
+                    readOnly = true,
+                    label = { Text(text = "Código") }
                 )
                 Spacer(modifier = Modifier.height(8.dp))
-                TextField(
+                OutlinedTextField(
                     value = product.nombreProducto,
                     onValueChange = onNameChange,
                     enabled = isEditable,
                     readOnly = !isEditable,
-                    label = { Text("Nombre del Producto") },
+//                    textStyle = AppTypography.bodyMedium,
+                    label = {
+                        Text(
+                            text = "Nombre del Producto",
+//                            style = AppTypography.labelSmall
+                        )
+                    },
                 )
                 Spacer(modifier = Modifier.height(8.dp))
                 DropdownField(
@@ -112,61 +119,87 @@ fun ProductForm(
                     enabled = isEditable
                 )
                 Spacer(modifier = Modifier.height(8.dp))
-                TextField(
+                OutlinedTextField(
                     value = product.precio,
                     onValueChange = onPriceChange,
                     enabled = isEditable,
                     readOnly = !isEditable,
-                    label = { Text("Precio") },
+//                    textStyle = AppTypography.bodyMedium,
+                    label = { Text(text = "Precio") },
                     keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Number)
                 )
                 Spacer(modifier = Modifier.height(8.dp))
-                TextField(
+                OutlinedTextField(
                     value = product.concentracion,
                     onValueChange = onConcentrationChange,
                     enabled = isEditable,
                     readOnly = !isEditable,
-                    label = { Text("Concentración") }
+//                    textStyle = AppTypography.bodyMedium,
+                    label = { Text(text = "Concentración") }
                 )
                 Spacer(modifier = Modifier.height(8.dp))
-                TextField(
+                OutlinedTextField(
                     value = product.presentacion,
                     onValueChange = onPresentationChange,
-                    label = { Text("Presentación") }
+//                    textStyle = AppTypography.bodyMedium,
+                    label = { Text(text = "Presentación") }
                 )
                 Spacer(modifier = Modifier.height(8.dp))
-                TextField(
+                OutlinedTextField(
                     value = product.descripcion,
                     onValueChange = onDescriptionChange,
-                    label = { Text("Descripción") }
+//                    textStyle = AppTypography.bodyMedium,
+                    label = { Text(text = "Descripción") }
                 )
                 Spacer(modifier = Modifier.height(8.dp))
-                TextField(
+                OutlinedTextField(
                     value = product.cantidad,
                     onValueChange = onQuantityChange,
-                    label = { Text(stringResource(R.string.quantity_desc)) },
+//                    textStyle = AppTypography.bodyMedium,
+                    label = {
+                        Text(
+                            text = stringResource(R.string.quantity_desc),
+//                            style = AppTypography.labelSmall
+                        )
+                    },
                     keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Number)
                 )
                 Spacer(modifier = Modifier.height(16.dp))
-                Row(
-                    modifier = Modifier
-                        .fillMaxWidth()
-                        .padding(top = 16.dp),
-                    horizontalArrangement = Arrangement.Center
-                ) {
-                    Button(onClick = onCancelClick) {
-                        Text(text = stringResource(R.string.cancel_button_desc))
-                    }
-                    Spacer(modifier = Modifier.width(16.dp))
-                    Button(
-                        onClick = onSaveClick,
-                        enabled = isFormValid
-                    ) {
-                        Text(buttonText)
-                    }
-                }
+
             }
 
+        }
+        Row(
+            modifier = Modifier
+                .fillMaxWidth()
+                .align(Alignment.BottomEnd)
+                .padding(top = 16.dp),
+            horizontalArrangement = Arrangement.End
+        ) {
+//            Button(onClick = onCancelClick) {
+//                Text(text = stringResource(R.string.cancel_button_desc))
+//            }
+            Button(
+                onClick = onSaveClick,
+                enabled = isFormValid
+            ) {
+                Icon(imageVector = Icons.Default.Add, contentDescription = null)
+                Spacer(modifier = Modifier.width(4.dp))
+                Text(text = stringResource(R.string.generate_batches_button))
+            }
+        }
+    }
+}
+
+@Composable
+fun LoadingIndicator(isLoading: Boolean) {
+    if (isLoading) {
+        Log.d("LoadingIndicator", "Rendering LoadingIndicator")
+        Box(
+            modifier = Modifier.fillMaxSize(),
+            contentAlignment = Alignment.Center
+        ) {
+            CircularProgressIndicator()
         }
     }
 }

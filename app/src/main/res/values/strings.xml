@@ -7,4 +7,6 @@
     <string name="quantity_desc">Cantidad</string>
     <string name="login_title">Iniciar sesión</string>
     <string name="edit_button">Edit</string>
+    <string name="generate_batches_button">Generar Lotes</string>
+    <string name="save_button">Guardar</string>
 </resources>

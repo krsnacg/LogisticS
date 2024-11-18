@@ -22,20 +22,44 @@ import kotlinx.coroutines.launch
 import java.io.IOException
 import androidx.lifecycle.ViewModelProvider.AndroidViewModelFactory.Companion.APPLICATION_KEY
 import com.example.logistics.model.BatchRequest
+import kotlinx.coroutines.flow.SharingStarted
+import kotlinx.coroutines.flow.combine
+import kotlinx.coroutines.flow.stateIn
 import java.text.SimpleDateFormat
 import java.util.Locale
 
 
 class ProductViewModel(private val productRepository: ProductRepository) : ViewModel() {
 
-    private val _codeState = MutableStateFlow(value = "")
-    val codeState: StateFlow<String> = _codeState.asStateFlow()
+//    private val _codeState = MutableStateFlow(value = "")
+//    val codeState: StateFlow<String> = _codeState.asStateFlow()
+
+    private val _isLoading = MutableStateFlow(false)
+    val isLoading: StateFlow<Boolean> = _isLoading.asStateFlow()
 
     private val _saveState = MutableStateFlow<Result<String>?>(null)
     val saveState: StateFlow<Result<String>?> = _saveState.asStateFlow()
 
     private val _productList = MutableStateFlow<List<Product>>(value = emptyList())
-    val productList: StateFlow<List<Product>> = _productList.asStateFlow()
+//    val productList: StateFlow<List<Product>> = _productList.asStateFlow()
+
+    private val _editableState = MutableStateFlow(value = true)
+    val editableState: StateFlow<Boolean> = _editableState.asStateFlow()
+
+    private val _searchQuery = MutableStateFlow("")
+    val searchQuery: StateFlow<String> = _searchQuery
+
+    val filteredProductList = _searchQuery
+        .combine(_productList) { query, products ->
+            val trimmedQuery = query.trim()
+            if (trimmedQuery.isEmpty()) {
+                products
+            } else {
+                products.filter {
+                    it.nombreProducto.contains(query, ignoreCase = true)
+                }
+            }
+        }.stateIn(viewModelScope, SharingStarted.Lazily, emptyList())
 
     private var batchCode: String = ""
 
@@ -58,14 +82,9 @@ class ProductViewModel(private val productRepository: ProductRepository) : ViewM
         }
     }
 
-    fun updateProduct() {
-        viewModelScope.launch {
-
-        }
-    }
-
     fun getAllProducts() {
         viewModelScope.launch {
+            _isLoading.value = true
             try {
                 val response = productRepository.getAllProducts()
                 if (response.status == "success" && response.data?.isNotEmpty() == true) {
@@ -75,13 +94,20 @@ class ProductViewModel(private val productRepository: ProductRepository) : ViewM
                 }
             } catch (e: Exception) {
                 Log.e("ExceptionGettingAllProducts", e.message.toString())
+            } finally {
+                _isLoading.value = false
             }
         }
     }
 
     fun saveProductAndBatches() {
         viewModelScope.launch {
+            _isLoading.value = true
             try {
+//                val response: ApiResponse<String> = if (_editableState.value)
+//                    productRepository.saveProductAndBatches(buildProductSaveRequest())
+//                else
+//                    productRepository.updateProductAndBatches(buildProductSaveRequest())
                 val response = productRepository.saveProductAndBatches(buildProductSaveRequest())
                 if (response.status == "success") {
                     _saveState.value = Result.success("Producto guardado exitosamente")
@@ -94,12 +120,37 @@ class ProductViewModel(private val productRepository: ProductRepository) : ViewM
             } catch (e: Exception) {
                 _saveState.value = Result.failure(e)
                 Log.e("ExceptionAtSavingProduct", e.message.toString())
+            } finally {
+                _isLoading.value = false
+            }
+        }
+    }
+
+    fun updateProductAndBatches() {
+        viewModelScope.launch {
+            _isLoading.value = true
+            try {
+                val response = productRepository.updateProductAndBatches(buildProductSaveRequest())
+                if (response.status == "success") {
+                    _saveState.value = Result.success("Producto actualizado exitosamente")
+                    resetProduct()
+                    Log.d("Success", "Producto actualizado exitosamente $response")
+                } else {
+                    _saveState.value = Result.failure(Exception("Error al actualizar el producto"))
+                    Log.e("Error", "Error al actualizar producto: $response")
+                }
+            } catch (e: Exception) {
+                _saveState.value = Result.failure(e)
+                Log.e("ExceptionAtUpdatingProduct", e.message.toString())
+            } finally {
+                _isLoading.value = false
             }
         }
     }
 
     fun getProductLastCode() {
         viewModelScope.launch {
+            _isLoading.value = true
             try {
 //                _codeState.value = incrementCode(productRepository.getLastCodeProducto())
 //                Log.d("viewModelGetCodeSuccess", _codeState.value)
@@ -109,6 +160,8 @@ class ProductViewModel(private val productRepository: ProductRepository) : ViewM
             } catch (e: IOException) {
                 product = product.copy(codigo = "EXCEPTION ERROR")
                 Log.d("viewModelGetCodeError", e.message.toString())
+            } finally {
+                _isLoading.value = false
             }
 
         }
@@ -116,6 +169,7 @@ class ProductViewModel(private val productRepository: ProductRepository) : ViewM
 
     fun getBatchLastCode() {
         viewModelScope.launch {
+            _isLoading.value = true
             try {
                 batchCode = productRepository.getBatchLastCode()
                 Log.d("viewModelGetCodeSuccess", batchCode)
@@ -123,6 +177,8 @@ class ProductViewModel(private val productRepository: ProductRepository) : ViewM
             } catch (e: IOException) {
                 // batch = batch.copy(codigoLote = "ERROR")
                 Log.d("viewModelGetCodeError", e.message.toString())
+            } finally {
+                _isLoading.value = false
             }
         }
     }
@@ -180,6 +236,14 @@ class ProductViewModel(private val productRepository: ProductRepository) : ViewM
 
     fun resetSaveState() {
         _saveState.value = null
+    }
+
+    fun toggleEditable(toggle: Boolean) {
+        _editableState.value = toggle
+    }
+
+    fun updateSearchQuery(query: String) {
+        _searchQuery.value = query
     }
 
     private fun incrementCode(code: String): String {

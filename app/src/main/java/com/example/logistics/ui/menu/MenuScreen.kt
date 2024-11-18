@@ -30,25 +30,34 @@ fun MenuScreen(navController: NavController, productViewModel: ProductViewModel)
     ) {
         Text(text = "Productos", fontWeight = FontWeight.SemiBold, fontSize = 32.sp)
         Spacer(modifier = Modifier.height(16.dp))
-        Button(
-            onClick = {
-                productViewModel.getProductLastCode()
-                navController.navigate("addProduct")
-            },
-            modifier = Modifier.fillMaxWidth()
-        ) {
-            Text("Registrar Productos")
-        }
-        Spacer(modifier = Modifier.height(16.dp))
-        Button(
-            onClick = {
-                productViewModel.getAllProducts()
-                navController.navigate("editProduct")
-            },
-            modifier = Modifier.fillMaxWidth()
-        ) {
-            Text("Editar Productos")
-        }
+//        Button(
+//            onClick = {
+//                productViewModel.toggleEditable(true)
+//                productViewModel.getProductLastCode()
+//                navController.navigate("addProduct")
+//            },
+//            modifier = Modifier.fillMaxWidth()
+//        ) {
+//            Text("Productos")
+//        }
+//        Spacer(modifier = Modifier.height(16.dp))
+//        Button(
+//            onClick = {
+//                productViewModel.toggleEditable(false)
+//                productViewModel.getAllProducts()
+//                navController.navigate("editProduct")
+//            },
+//            modifier = Modifier.fillMaxWidth()
+//        ) {
+//            Text("Editar Productos")
+//        }
         // Agregar más botones para otros módulos de gestión
+
+        Button(
+            onClick = { navController.navigate("products") },
+            modifier = Modifier.fillMaxWidth()
+        ) {
+            Text("Seccion de productos")
+        }
     }
 }

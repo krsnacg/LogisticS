@@ -10,6 +10,7 @@ interface ProductRepository {
     suspend fun getBatchLastCode(): String
     suspend fun saveProductAndBatches(productRequest: ProductRequest): ApiResponse<String>
     suspend fun getAllProducts(): ApiResponse<List<Product>>
+    suspend fun updateProductAndBatches(productRequest: ProductRequest): ApiResponse<String>
 }
 
 class NetworkProductRepository(
@@ -36,6 +37,16 @@ class NetworkProductRepository(
         return if (response.isSuccessful) {
             val productList = response.body()?.map { it.toProduct() }
             ApiResponse(status = "success", message = null, data = productList)
+        } else {
+            ApiResponse(status = "error", message = response.message(), data = null)
+        }
+    }
+
+    override suspend fun updateProductAndBatches(productRequest: ProductRequest): ApiResponse<String> {
+        val response = productApiService.updateProductWithBatches(productRequest)
+        return if (response.isSuccessful) {
+            val productCode = response.body()?.code ?: "ERROR"
+            ApiResponse(status = "success", message = null, data = productCode)
         } else {
             ApiResponse(status = "error", message = response.message(), data = null)
         }
