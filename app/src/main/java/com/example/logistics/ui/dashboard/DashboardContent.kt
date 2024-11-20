@@ -20,7 +20,9 @@ import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.grid.GridCells
 import androidx.compose.foundation.lazy.grid.LazyVerticalGrid
+import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.AttachMoney
 import androidx.compose.material.icons.filled.History
@@ -37,6 +39,7 @@ import androidx.compose.material3.Divider
 import androidx.compose.material3.ElevatedCard
 import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
@@ -47,6 +50,8 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.shadow
+import androidx.compose.ui.graphics.Brush
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalConfiguration
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
@@ -57,206 +62,76 @@ fun DashboardContent(
     modifier: Modifier = Modifier,
     paddingValues: PaddingValues
 ) {
-    Box(
+
+    val categorias = mapOf(
+        "Analgésicos" to 30f,
+        "Antibióticos" to 25f,
+        "Vitaminas" to 20f,
+        "Otros" to 25f
+    )
+
+    // Usar un scroll vertical para el contenido
+    Column(
         modifier = modifier
-            .fillMaxSize()
-            .background(MaterialTheme.colorScheme.background.copy(alpha = 0.95f))
-            .padding(paddingValues)
+            .padding(paddingValues)  // Asegura que los padding se apliquen correctamente
+            .fillMaxWidth()
+            .verticalScroll(rememberScrollState())
+            .padding(horizontal = 16.dp, vertical = 12.dp) // Ajusta el espaciado interior del contenido
     ) {
-        Column(
-            modifier = Modifier
-                .fillMaxSize()
-                .padding(16.dp)
-        ) {
-            // Título del Dashboard
-            Text(
-                text = "Panel de Control",
-                style = MaterialTheme.typography.headlineMedium.copy(
-                    fontWeight = FontWeight.Bold,
-                    letterSpacing = 0.5.sp
-                ),
-                color = MaterialTheme.colorScheme.onBackground,
-                modifier = Modifier.padding(bottom = 24.dp)
-            )
+        // Título de bienvenida
+        Text(
+            text = "Bienvenido, Carlos",
+            style = MaterialTheme.typography.titleLarge.copy(fontWeight = FontWeight.Bold), // Negrita para el título
+            modifier = Modifier.padding(bottom = 4.dp)
+        )
 
-            // Estadísticas Principales
-            LazyVerticalGrid(
-                columns = GridCells.Adaptive(minSize = 250.dp),
-                horizontalArrangement = Arrangement.spacedBy(16.dp),
-                verticalArrangement = Arrangement.spacedBy(16.dp),
-                modifier = Modifier.fillMaxWidth()
-            ) {
-                item {
-                    StatCard(
-                        title = "Total Productos",
-                        value = "1,234",
-                        icon = Icons.Default.Inventory,
-                        color = MaterialTheme.colorScheme.primary,
-                        gradient = listOf(
-                            MaterialTheme.colorScheme.primary.copy(alpha = 0.2f),
-                            MaterialTheme.colorScheme.primary.copy(alpha = 0.1f)
-                        )
-                    )
-                }
-                item {
-                    StatCard(
-                        title = "Próximos a Vencer",
-                        value = "45",
-                        icon = Icons.Default.Warning,
-                        color = MaterialTheme.colorScheme.error,
-                        gradient = listOf(
-                            MaterialTheme.colorScheme.error.copy(alpha = 0.2f),
-                            MaterialTheme.colorScheme.error.copy(alpha = 0.1f)
-                        )
-                    )
-                }
-                item {
-                    StatCard(
-                        title = "Stock Bajo",
-                        value = "23",
-                        icon = Icons.Default.TrendingDown,
-                        color = MaterialTheme.colorScheme.error,
-                        gradient = listOf(
-                            MaterialTheme.colorScheme.error.copy(alpha = 0.2f),
-                            MaterialTheme.colorScheme.error.copy(alpha = 0.1f)
-                        )
-                    )
-                }
+        // Subtítulo de operaciones
+        Text(
+            text = "Operaciones",
+            style = MaterialTheme.typography.bodyLarge, // Estilo del subtítulo
+            color = MaterialTheme.colorScheme.onSurface.copy(alpha = 0.8f)
+        )
 
-            }
-
-            Spacer(modifier = Modifier.height(24.dp))
-
-            // Sección de Alertas y Actividad Reciente
-            Row(
-                modifier = Modifier
-                    .fillMaxWidth()
-                    .weight(1f),
-                horizontalArrangement = Arrangement.spacedBy(16.dp)
-            ) {
-                // Panel de Alertas
-                ElevatedCard(
-                    modifier = Modifier
-                        .weight(1f)
-                        .fillMaxHeight()
-                        .shadow(
-                            elevation = 8.dp,
-                            shape = RoundedCornerShape(16.dp),
-                            clip = true
-                        ),
-                    colors = CardDefaults.elevatedCardColors(
-                        containerColor = MaterialTheme.colorScheme.surface.copy(alpha = 0.95f)
-                    ),
-                    elevation = CardDefaults.elevatedCardElevation(defaultElevation = 6.dp)
-                ) {
-                    Column(
-                        modifier = Modifier
-                            .padding(20.dp)
-                            .fillMaxSize()
-                    ) {
-                        Row(
-                            verticalAlignment = Alignment.CenterVertically,
-                            modifier = Modifier.padding(bottom = 16.dp)
-                        ) {
-                            Icon(
-                                imageVector = Icons.Default.Notifications,
-                                contentDescription = null,
-                                tint = MaterialTheme.colorScheme.primary,
-                                modifier = Modifier.size(28.dp)
-                            )
-                            Spacer(modifier = Modifier.width(8.dp))
-                            Text(
-                                "Alertas",
-                                style = MaterialTheme.typography.titleLarge.copy(
-                                    fontWeight = FontWeight.Bold
-                                ),
-                                color = MaterialTheme.colorScheme.onSurface
-                            )
-                        }
-                        Divider(
-                            color = MaterialTheme.colorScheme.onSurface.copy(alpha = 0.1f),
-                            thickness = 1.dp,
-                            modifier = Modifier.padding(bottom = 16.dp)
-                        )
-                        LazyColumn(
-                            verticalArrangement = Arrangement.spacedBy(12.dp)
-                        ) {
-                            items(3) { index ->
-                                AlertItem(
-                                    when (index) {
-                                        0 -> "Paracetamol - Stock bajo (10 unidades)"
-                                        1 -> "Amoxicilina - Vence en 30 días"
-                                        else -> "Ibuprofeno - Alto consumo detectado"
-                                    },
-                                    when (index) {
-                                        0 -> Icons.Default.Warning
-                                        1 -> Icons.Default.Timer
-                                        else -> Icons.Default.TrendingUp
-                                    }
-                                )
-                            }
-                        }
-                    }
-                }
-
-                // Panel de Actividad Reciente
-                ElevatedCard(
-                    modifier = Modifier
-                        .weight(1f)
-                        .fillMaxHeight()
-                        .shadow(
-                            elevation = 8.dp,
-                            shape = RoundedCornerShape(16.dp),
-                            clip = true
-                        ),
-                    colors = CardDefaults.elevatedCardColors(
-                        containerColor = MaterialTheme.colorScheme.surface.copy(alpha = 0.95f)
-                    ),
-                    elevation = CardDefaults.elevatedCardElevation(defaultElevation = 6.dp)
-                ) {
-                    Column(
-                        modifier = Modifier
-                            .padding(20.dp)
-                            .fillMaxSize()
-                    ) {
-                        Row(
-                            verticalAlignment = Alignment.CenterVertically,
-                            modifier = Modifier.padding(bottom = 16.dp)
-                        ) {
-                            Icon(
-                                imageVector = Icons.Default.History,
-                                contentDescription = null,
-                                tint = MaterialTheme.colorScheme.primary,
-                                modifier = Modifier.size(28.dp)
-                            )
-                            Spacer(modifier = Modifier.width(8.dp))
-                            Text(
-                                "Actividad Reciente",
-                                style = MaterialTheme.typography.titleLarge.copy(
-                                    fontWeight = FontWeight.Bold
-                                ),
-                                color = MaterialTheme.colorScheme.onSurface
-                            )
-                        }
-                        Divider(
-                            color = MaterialTheme.colorScheme.onSurface.copy(alpha = 0.1f),
-                            thickness = 1.dp,
-                            modifier = Modifier.padding(bottom = 16.dp)
-                        )
-                        LazyColumn(
-                            verticalArrangement = Arrangement.spacedBy(12.dp)
-                        ) {
-                            items(5) { index ->
-                                ActivityItem(
-                                    "Producto ${5 - index}",
-                                    "Acción realizada hace ${index + 1} ${if (index == 0) "minuto" else "minutos"}",
-                                    Icons.Default.Info
-                                )
-                            }
-                        }
-                    }
-                }
+        // Componente de operaciones
+        OperationsDashboard(
+            modifier = Modifier.fillMaxWidth()
+        ) { operation ->
+            when (operation) {
+                "Registrar producto" -> {/* Navegar a pantalla de registro */}
+                "Editar producto" -> {/* Navegar a pantalla de edición */}
+                "Gestionar lotes" -> {/* Navegar a pantalla de lotes */}
+                "Generar guía de remisión" -> {/* Navegar a pantalla de guía */}
             }
         }
+
+        Spacer(modifier = Modifier.height(16.dp))
+
+        ProductSummary(
+            modifier = Modifier.fillMaxWidth(),
+            totalProducts = 127
+        )
+
+        LowStockCard(
+            productName = "Paracetamol 500mg",
+            stockCount = 5,
+            modifier = Modifier
+        )
+
+        Spacer(modifier = Modifier.height(8.dp))
+
+        ExpiringSoonCard(
+            productName = "Ibuprofeno 200mg",
+            expirationDate = "25/11/2024",
+            modifier = Modifier
+        )
+
+
+
+        ProductCategoryChart(
+            data = categorias,
+            //onCategoryClick = onCategoryClick
+        )
+
+        Spacer(modifier = Modifier.height(16.dp))
     }
 }

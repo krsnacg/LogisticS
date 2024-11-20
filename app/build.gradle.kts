@@ -49,6 +49,8 @@ android {
     }
 }
 
+
+
 dependencies {
 
     implementation(libs.androidx.core.ktx)
@@ -63,6 +65,7 @@ dependencies {
     implementation("androidx.lifecycle:lifecycle-viewmodel-compose:2.8.7")
     implementation("androidx.compose.material:material-icons-core:1.5.4")
     implementation("androidx.compose.material:material-icons-extended:1.5.4")
+    implementation("com.github.PhilJay:MPAndroidChart:v3.1.0")
     implementation(libs.androidx.espresso.core)
     testImplementation(libs.junit)
     androidTestImplementation(libs.androidx.junit)

@@ -39,20 +39,10 @@ import com.example.logistics.ui.components.DrawerContent
 import com.example.logistics.ui.dashboard.DashboardContent
 import com.example.logistics.ui.product.ProductViewModel
 
-
-/*
-data class MenuItem(
-    val title: String,
-    val icon: ImageVector,
-    val route: String
-)
-*/
-
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun MenuScreen(navController: NavController, loginViewModel: LoginViewModel) {
     val uiState by loginViewModel.uiState.collectAsState()
-
     val drawerState = rememberDrawerState(initialValue = DrawerValue.Closed)
     val scope = rememberCoroutineScope()
 
@@ -114,9 +104,21 @@ fun MenuScreen(navController: NavController, loginViewModel: LoginViewModel) {
                         actionIconContentColor = MaterialTheme.colorScheme.onPrimary
                     )
                 )
+            },
+            content = { paddingValues ->
+                // Agregar scroll vertical al contenido del Dashboard
+                Column(
+                    modifier = Modifier
+                        .fillMaxSize() // Ocupa el espacio restante
+                        .padding(paddingValues) // Ajusta el contenido al Scaffold
+                        //.verticalScroll(rememberScrollState()) // Scroll vertical
+                ) {
+                    DashboardContent(
+                        modifier = Modifier.fillMaxWidth(), // Permite que DashboardContent ocupe el ancho
+                        paddingValues = PaddingValues(0.dp) // Si es necesario ajustar internamente
+                    )
+                }
             }
-        ) { paddingValues -> DashboardContent(paddingValues = paddingValues)
-            //Espacio para el dashboard
-        }
+        )
     }
 }
