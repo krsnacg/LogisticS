@@ -1,4 +1,4 @@
-package com.example.logistics.ui.components
+package com.example.logistics.ui.screens.menu.components
 
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement

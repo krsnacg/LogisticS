@@ -25,6 +25,7 @@ import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.launch
 import java.io.IOException
 import androidx.lifecycle.ViewModelProvider.AndroidViewModelFactory.Companion.APPLICATION_KEY
+import com.example.logistics.data.CategoryChart
 import com.example.logistics.data.ExpiringProduct
 import com.example.logistics.data.LowerStockProduct
 import com.example.logistics.model.BatchRequest
@@ -42,6 +43,14 @@ class ProductViewModel(private val productRepository: ProductRepository) : ViewM
     val lowerStockProduct: StateFlow<LowerStockProduct?> get() = _lowerStockProduct
     private val _expiringProduct = MutableStateFlow<ExpiringProduct?>(null)
     val expiringProduct: StateFlow<ExpiringProduct?> get() = _expiringProduct
+    private val _quantityProducts = MutableStateFlow<Int?>(null)
+    val quantityProducts: StateFlow<Int?> get() = _quantityProducts
+    private val _categoriesQuantity = MutableStateFlow<List<CategoryChart>>(emptyList())
+    val categoriesQuantity: StateFlow<List<CategoryChart>> get() = _categoriesQuantity
+    private val _totalCategorias = MutableStateFlow<Int?>(null)
+    val totalCategorias: StateFlow<Int?> get() = _totalCategorias
+    private val _totalLotes = MutableStateFlow<Int?>(null)
+    val totalLotes: StateFlow<Int?> get() = _totalLotes
     private val productService: ProductApiService
 
     val productos = mutableStateListOf<Product>()
@@ -79,6 +88,10 @@ class ProductViewModel(private val productRepository: ProductRepository) : ViewM
         productService = retrofit.create(ProductApiService::class.java)
         getLowerStockProduct()
         getExpiringProduct()
+        getQuantityProducts()
+        getQuantityByCategory()
+        getTotalCategorias()
+        getTotalLotes()
     }
 
 
@@ -112,6 +125,51 @@ class ProductViewModel(private val productRepository: ProductRepository) : ViewM
                 _expiringProduct.value = productService.getExpiringProduct().body()
             }catch (e: Exception) {
                 Log.e("ERROR", e.message.toString())
+            }
+        }
+    }
+
+    fun getQuantityProducts() {
+        viewModelScope.launch {
+            try {
+                var quantity = productService.getTotalProducts();
+                _quantityProducts.value = productService.getTotalProducts().body()
+                Log.e("OBTENER CANTIDAD","GAAAAAAAAAAAAAAAAA ${quantity}")
+            }catch (e: Exception) {
+                Log.e("CANTIDAD ERROR", e.message.toString())
+            }
+        }
+    }
+
+    fun getTotalCategorias() {
+        viewModelScope.launch {
+            try {
+                _totalCategorias.value = productService.getTotalCategorias().body()
+
+            }catch (e: Exception) {
+                Log.e("CANTIDAD ERROR", e.message.toString())
+            }
+        }
+    }
+
+    fun getTotalLotes() {
+        viewModelScope.launch {
+            try {
+                _totalLotes.value = productService.getTotalLotes().body()
+
+            }catch (e: Exception) {
+                Log.e("CANTIDAD ERROR", e.message.toString())
+            }
+        }
+    }
+
+    fun getQuantityByCategory() {
+        viewModelScope.launch {
+            try {
+                _categoriesQuantity.value = productService.getQuantityByCategory().body()!!
+
+            }catch (e: Exception) {
+                Log.e("CANTIDAD ERROR", e.message.toString())
             }
         }
     }

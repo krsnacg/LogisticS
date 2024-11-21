@@ -7,7 +7,7 @@ import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
 import com.example.logistics.model.LoginViewModel
 import com.example.logistics.ui.login.LoginScreen
-import com.example.logistics.ui.screens.MenuScreen
+import com.example.logistics.ui.screens.menu.MenuScreen
 import com.example.logistics.ui.product.AddProductScreen
 import com.example.logistics.ui.product.EditProductScreen
 import com.example.logistics.ui.product.BatchScreen

@@ -1,4 +1,5 @@
 package com.example.logistics.service
+import com.example.logistics.data.CategoryChart
 import com.example.logistics.data.ExpiringProduct
 import com.example.logistics.data.LowerStockProduct
 import com.example.logistics.model.ProductRequest
@@ -31,5 +32,17 @@ interface ProductApiService {
 
     @GET("api/almacen/producto/expiring")
     suspend fun getExpiringProduct(): Response<ExpiringProduct>
+
+    @GET("api/almacen/producto/total")
+    suspend fun getTotalProducts(): Response<Int>
+
+    @GET("api/almacen/categorias/cantidad")
+    suspend fun getQuantityByCategory(): Response<List<CategoryChart>>
+
+    @GET("api/almacen/categorias/total")
+    suspend fun getTotalCategorias(): Response<Int>
+
+    @GET("api/almacen/lotes/total")
+    suspend fun getTotalLotes(): Response<Int>
 
 }
