@@ -18,11 +18,14 @@ fun AddProductScreen(navController: NavController, viewModel: ProductViewModel =
     // val productoState by viewModel.product.collectAsState()
     val editableState by viewModel.editableState.collectAsState()
     val isLoading by viewModel.isLoading.collectAsState()
+    val categoryList by viewModel.categoryList.collectAsState()
+    val formList by viewModel.formList.collectAsState()
 
     LaunchedEffect(Unit) {
         if (editableState) {
             viewModel.toggleEditable(toggle = true)
             viewModel.getProductLastCode()
+            viewModel.getCategoryAndForm()
         }
     }
 
@@ -30,7 +33,8 @@ fun AddProductScreen(navController: NavController, viewModel: ProductViewModel =
         ProductForm(
             // code = codigoState,
             product = viewModel.product,
-            // optionName = "Registrar",
+            categoryList = categoryList,
+            formList = formList,
             isEditable = editableState,
             isFormValid = viewModel.isProductComplete(),
             onNameChange = {

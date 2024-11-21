@@ -23,4 +23,10 @@ interface ProductApiService {
     @GET("lotes/last-code")
     suspend fun getBatchLastCode(): Response<Map<String,String>>
 
+    @GET("formas/for-com")
+    suspend fun getFormas(): Response<List<String>>
+
+    @GET("categorias/cat-com")
+    suspend fun getCategories(): Response<List<String>>
+
 }

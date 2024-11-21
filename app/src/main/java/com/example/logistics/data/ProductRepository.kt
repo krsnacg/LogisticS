@@ -11,6 +11,8 @@ interface ProductRepository {
     suspend fun saveProductAndBatches(productRequest: ProductRequest): ApiResponse<String>
     suspend fun getAllProducts(): ApiResponse<List<Product>>
     suspend fun updateProductAndBatches(productRequest: ProductRequest): ApiResponse<String>
+    suspend fun getFormas(): ApiResponse<List<String>>
+    suspend fun getCategories(): ApiResponse<List<String>>
 }
 
 class NetworkProductRepository(
@@ -47,6 +49,26 @@ class NetworkProductRepository(
         return if (response.isSuccessful) {
             val productCode = response.body()?.code ?: "ERROR"
             ApiResponse(status = "success", message = null, data = productCode)
+        } else {
+            ApiResponse(status = "error", message = response.message(), data = null)
+        }
+    }
+
+    override suspend fun getFormas(): ApiResponse<List<String>> {
+        val response = productApiService.getFormas()
+        return  if (response.isSuccessful) {
+            val formaList = response.body()
+            ApiResponse(status = "success", message = null, data = formaList)
+        } else {
+            ApiResponse(status = "error", message = response.message(), data = null)
+        }
+    }
+
+    override suspend fun getCategories(): ApiResponse<List<String>> {
+        val response = productApiService.getCategories()
+        return  if (response.isSuccessful) {
+            val formaList = response.body()
+            ApiResponse(status = "success", message = null, data = formaList)
         } else {
             ApiResponse(status = "error", message = response.message(), data = null)
         }

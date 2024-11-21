@@ -39,12 +39,16 @@ class ProductViewModel(private val productRepository: ProductRepository) : ViewM
 
     private val _saveState = MutableStateFlow<Result<String>?>(null)
     val saveState: StateFlow<Result<String>?> = _saveState.asStateFlow()
+    private val _editableState = MutableStateFlow(value = true)
+    val editableState: StateFlow<Boolean> = _editableState.asStateFlow()
 
     private val _productList = MutableStateFlow<List<Product>>(value = emptyList())
 //    val productList: StateFlow<List<Product>> = _productList.asStateFlow()
 
-    private val _editableState = MutableStateFlow(value = true)
-    val editableState: StateFlow<Boolean> = _editableState.asStateFlow()
+    private val _categoryList = MutableStateFlow<List<String>>(value = emptyList())
+    val categoryList: StateFlow<List<String>> = _categoryList.asStateFlow()
+    private val _formList = MutableStateFlow<List<String>>(value = emptyList())
+    val formList: StateFlow<List<String>> = _formList.asStateFlow()
 
     private val _searchQuery = MutableStateFlow("")
     val searchQuery: StateFlow<String> = _searchQuery
@@ -177,6 +181,25 @@ class ProductViewModel(private val productRepository: ProductRepository) : ViewM
             } catch (e: IOException) {
                 // batch = batch.copy(codigoLote = "ERROR")
                 Log.d("viewModelGetCodeError", e.message.toString())
+            } finally {
+                _isLoading.value = false
+            }
+        }
+    }
+
+    fun getCategoryAndForm(){
+        viewModelScope.launch {
+            _isLoading.value = true
+            try {
+                val categoryRes = productRepository.getCategories()
+                val formRes = productRepository.getFormas()
+                if (categoryRes.status == "success" && categoryRes.data?.isNotEmpty() == true)
+                    _categoryList.value = categoryRes.data
+                if (formRes.status == "success" && formRes.data?.isNotEmpty() == true)
+                    _formList.value = formRes.data
+                Log.d("viewModelGetCat&EtcSuccess", _categoryList.toString())
+            } catch (e: IOException) {
+                Log.d("viewModelGetCatError", e.message.toString())
             } finally {
                 _isLoading.value = false
             }
