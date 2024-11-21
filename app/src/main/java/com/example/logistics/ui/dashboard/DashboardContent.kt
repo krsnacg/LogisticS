@@ -43,6 +43,7 @@ import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
@@ -58,14 +59,17 @@ import androidx.compose.ui.text.font.FontFamily
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.lifecycle.viewmodel.compose.viewModel
 import com.example.logistics.R
 import com.example.logistics.model.EmpleadoDto
+import com.example.logistics.ui.product.ProductViewModel
 
 @Composable
 fun DashboardContent(
     modifier: Modifier = Modifier,
     paddingValues: PaddingValues,
-    empleado: EmpleadoDto?
+    empleado: EmpleadoDto?,
+    productViewModel: ProductViewModel
 ) {
 
     val categorias = mapOf(
@@ -74,6 +78,11 @@ fun DashboardContent(
         "Vitaminas" to 20f,
         "Otros" to 25f
     )
+
+    val lowerStockProduct = productViewModel.lowerStockProduct.collectAsState().value
+    val expiringProduct = productViewModel.expiringProduct.collectAsState().value
+
+
 
 
     Column(
@@ -118,19 +127,28 @@ fun DashboardContent(
             totalProducts = 127
         )
 
-        LowStockCard(
-            productName = "Paracetamol 500mg",
-            stockCount = 5,
-            modifier = Modifier
-        )
+
+        if (lowerStockProduct != null) {
+            LowStockCard(
+                productName ="${lowerStockProduct.nombre} ${lowerStockProduct.concentracion}",
+                stockCount = lowerStockProduct.stock,
+                modifier = Modifier
+            )
+        }
+
 
         Spacer(modifier = Modifier.height(8.dp))
 
-        ExpiringSoonCard(
-            productName = "Ibuprofeno 200mg",
-            expirationDate = "25/11/2024",
-            modifier = Modifier
-        )
+        if(expiringProduct != null ){
+            ExpiringSoonCard(
+                productName = "${expiringProduct.nombre} ${expiringProduct.concentracion}",
+                expirationDate = expiringProduct.fechaExpiracion,
+                loteId = expiringProduct.loteId,
+                modifier = Modifier
+            )
+        }
+
+
 
 
 

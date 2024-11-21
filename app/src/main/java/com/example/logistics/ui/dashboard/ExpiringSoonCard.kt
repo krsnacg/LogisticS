@@ -50,6 +50,7 @@ import androidx.compose.ui.unit.dp
 fun ExpiringSoonCard(
     productName: String,
     expirationDate: String,
+    loteId: String,
     modifier: Modifier = Modifier
 ) {
     Card(
@@ -102,7 +103,7 @@ fun ExpiringSoonCard(
                     )
                 )
                 Text(
-                    text = "Vence el $expirationDate",
+                    text = "${loteId}  Vence el $expirationDate",
                     style = MaterialTheme.typography.bodySmall.copy(
                         color = MaterialTheme.colorScheme.onSurface.copy(alpha = 0.7f)
                     )

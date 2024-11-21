@@ -1,5 +1,6 @@
 package com.example.logistics.service
-import com.example.logistics.model.Product
+import com.example.logistics.data.ExpiringProduct
+import com.example.logistics.data.LowerStockProduct
 import com.example.logistics.model.ProductRequest
 import com.example.logistics.model.ProductResponse
 import retrofit2.Response
@@ -23,5 +24,12 @@ interface ProductApiService {
 
     @GET("lotes/last-code")
     suspend fun getBatchLastCode(): Response<Map<String,String>>
+
+
+    @GET("api/almacen/producto/lowerstock")
+    suspend fun getLowerStockProduct(): Response<LowerStockProduct>
+
+    @GET("api/almacen/producto/expiring")
+    suspend fun getExpiringProduct(): Response<ExpiringProduct>
 
 }

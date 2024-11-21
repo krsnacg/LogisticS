@@ -43,7 +43,7 @@ import com.example.logistics.ui.product.ProductViewModel
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun MenuScreen(navController: NavController, loginViewModel: LoginViewModel) {
+fun MenuScreen(navController: NavController, loginViewModel: LoginViewModel, productoViewModel: ProductViewModel) {
     val uiState by loginViewModel.uiState.collectAsState()
     val drawerState = rememberDrawerState(initialValue = DrawerValue.Closed)
     val scope = rememberCoroutineScope()
@@ -117,7 +117,8 @@ fun MenuScreen(navController: NavController, loginViewModel: LoginViewModel) {
                     DashboardContent(
                         modifier = Modifier.fillMaxWidth(),
                         paddingValues = PaddingValues(0.dp),
-                        empleado = uiState.empleado
+                        empleado = uiState.empleado,
+                        productViewModel = productoViewModel
                     )
                 }
             }

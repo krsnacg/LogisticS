@@ -25,14 +25,24 @@ import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.launch
 import java.io.IOException
 import androidx.lifecycle.ViewModelProvider.AndroidViewModelFactory.Companion.APPLICATION_KEY
+import com.example.logistics.data.ExpiringProduct
+import com.example.logistics.data.LowerStockProduct
 import com.example.logistics.model.BatchRequest
+import com.example.logistics.service.ProductApiService
+import retrofit2.Retrofit
+import retrofit2.converter.gson.GsonConverterFactory
 import java.text.SimpleDateFormat
-import java.util.Date
 import java.util.Locale
-import kotlin.math.exp
 
 
 class ProductViewModel(private val productRepository: ProductRepository) : ViewModel() {
+
+
+    private val _lowerStockProduct = MutableStateFlow<LowerStockProduct?>(null)
+    val lowerStockProduct: StateFlow<LowerStockProduct?> get() = _lowerStockProduct
+    private val _expiringProduct = MutableStateFlow<ExpiringProduct?>(null)
+    val expiringProduct: StateFlow<ExpiringProduct?> get() = _expiringProduct
+    private val productService: ProductApiService
 
     val productos = mutableStateListOf<Product>()
     var selectedProduct by mutableStateOf<Product?>(value = null)
@@ -61,12 +71,47 @@ class ProductViewModel(private val productRepository: ProductRepository) : ViewM
         private set
 
 
+    init {
+        val retrofit = Retrofit.Builder()
+            .baseUrl("http://10.0.2.2:9000/")
+            .addConverterFactory(GsonConverterFactory.create())
+            .build()
+        productService = retrofit.create(ProductApiService::class.java)
+        getLowerStockProduct()
+        getExpiringProduct()
+    }
+
+
     companion object {
         val Factory: ViewModelProvider.Factory = viewModelFactory {
             initializer {
                 val application = (this[APPLICATION_KEY] as ProductApplication)
                 val productRepository = application.container.productRepository
                 ProductViewModel(productRepository = productRepository)
+            }
+        }
+    }
+
+
+    fun getLowerStockProduct() {
+        viewModelScope.launch {
+            try {
+                var product = productService.getLowerStockProduct().body()
+                _lowerStockProduct.value = productService.getLowerStockProduct().body();
+
+            }catch (e: Exception) {
+                Log.e("ERROR", e.message.toString())
+            }
+        }
+    }
+
+    fun getExpiringProduct() {
+        viewModelScope.launch {
+            try {
+                var product = productService.getExpiringProduct().body();
+                _expiringProduct.value = productService.getExpiringProduct().body()
+            }catch (e: Exception) {
+                Log.e("ERROR", e.message.toString())
             }
         }
     }
