@@ -53,14 +53,19 @@ import androidx.compose.ui.draw.shadow
 import androidx.compose.ui.graphics.Brush
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalConfiguration
+import androidx.compose.ui.text.font.Font
+import androidx.compose.ui.text.font.FontFamily
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import com.example.logistics.R
+import com.example.logistics.model.EmpleadoDto
 
 @Composable
 fun DashboardContent(
     modifier: Modifier = Modifier,
-    paddingValues: PaddingValues
+    paddingValues: PaddingValues,
+    empleado: EmpleadoDto?
 ) {
 
     val categorias = mapOf(
@@ -70,37 +75,39 @@ fun DashboardContent(
         "Otros" to 25f
     )
 
-    // Usar un scroll vertical para el contenido
+
     Column(
         modifier = modifier
-            .padding(paddingValues)  // Asegura que los padding se apliquen correctamente
+            .padding(paddingValues)
             .fillMaxWidth()
             .verticalScroll(rememberScrollState())
-            .padding(horizontal = 16.dp, vertical = 12.dp) // Ajusta el espaciado interior del contenido
+            .padding(horizontal = 16.dp, vertical = 12.dp)
     ) {
-        // Título de bienvenida
+
         Text(
-            text = "Bienvenido, Carlos",
-            style = MaterialTheme.typography.titleLarge.copy(fontWeight = FontWeight.Bold), // Negrita para el título
-            modifier = Modifier.padding(bottom = 4.dp)
+            text = "Bienvenido, ${empleado?.nombre}",
+            style = MaterialTheme.typography.titleLarge.copy(fontWeight = FontWeight.Bold),
+            modifier = Modifier.padding(bottom = 4.dp),
+            fontFamily = FontFamily(Font(R.font.montserrat_bold))
         )
 
-        // Subtítulo de operaciones
+
         Text(
             text = "Operaciones",
             style = MaterialTheme.typography.bodyLarge, // Estilo del subtítulo
-            color = MaterialTheme.colorScheme.onSurface.copy(alpha = 0.8f)
+            color = MaterialTheme.colorScheme.onSurface.copy(alpha = 0.8f),
+            fontFamily = FontFamily(Font(R.font.montserrat_regular))
         )
 
-        // Componente de operaciones
+
         OperationsDashboard(
             modifier = Modifier.fillMaxWidth()
         ) { operation ->
             when (operation) {
-                "Registrar producto" -> {/* Navegar a pantalla de registro */}
-                "Editar producto" -> {/* Navegar a pantalla de edición */}
-                "Gestionar lotes" -> {/* Navegar a pantalla de lotes */}
-                "Generar guía de remisión" -> {/* Navegar a pantalla de guía */}
+                "Registrar producto" -> {}
+                "Editar producto" -> {}
+                "Gestionar lotes" -> {}
+                "Generar guía de remisión" -> {}
             }
         }
 

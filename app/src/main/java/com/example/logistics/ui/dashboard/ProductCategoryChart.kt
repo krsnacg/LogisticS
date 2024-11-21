@@ -45,32 +45,32 @@ import com.github.mikephil.charting.data.PieEntry
 @Composable
 fun ProductCategoryChart(
     modifier: Modifier = Modifier,
-    data: Map<String, Float> // Mapa de categoría y porcentaje
+    data: Map<String, Float>
 ) {
-    // Configuración de colores para las categorías
+
     val colors = listOf(
-        Color(0xFF4CAF50), // Verde
-        Color(0xFFFF9800), // Naranja
-        Color(0xFF2196F3), // Azul
-        Color(0xFFF44336)  // Rojo
+        Color(0xFF4CAF50),
+        Color(0xFFFF9800),
+        Color(0xFF2196F3),
+        Color(0xFFF44336)
     )
 
     AndroidView(
         modifier = modifier
             .fillMaxWidth()
-            .height(300.dp) // Ajusta esta altura si es necesario
+            .height(300.dp)
             .padding(16.dp)
-            .border(2.dp, Color.Gray, shape = RoundedCornerShape(8.dp)), // Agregar borde para verificar el espacio
+            .border(2.dp, Color.Gray, shape = RoundedCornerShape(8.dp)),
         factory = { context ->
             PieChart(context).apply {
-                description.isEnabled = false // Desactivar descripción
-                isDrawHoleEnabled = true      // Activar agujero en el centro
-                holeRadius = 30f              // Ajustar tamaño del agujero
-                setUsePercentValues(true)    // Mostrar porcentajes
+                description.isEnabled = false
+                isDrawHoleEnabled = true
+                holeRadius = 30f
+                setUsePercentValues(true)
                 setEntryLabelColor(Color.Black.toArgb())
                 setEntryLabelTextSize(12f)
 
-                // Leyenda (si es necesario)
+
                 legend.isEnabled = true
                 legend.orientation = Legend.LegendOrientation.HORIZONTAL
                 legend.horizontalAlignment = Legend.LegendHorizontalAlignment.CENTER
@@ -78,18 +78,18 @@ fun ProductCategoryChart(
             }
         },
         update = { pieChart ->
-            // Crear entradas para las categorías
+
             val entries = data.map { (category, percentage) ->
                 PieEntry(percentage, category)
             }
 
-            // Crear y configurar el dataset
+
             val dataSet = PieDataSet(entries, "Categorías")
-            dataSet.colors = colors.map { it.toArgb() } // Colores personalizados
+            dataSet.colors = colors.map { it.toArgb() }
             dataSet.valueTextSize = 14f
             dataSet.valueTextColor = Color.White.toArgb()
 
-            // Asignar los datos a la gráfica
+
             pieChart.data = PieData(dataSet)
             pieChart.invalidate() // Actualizar el gráfico
         }

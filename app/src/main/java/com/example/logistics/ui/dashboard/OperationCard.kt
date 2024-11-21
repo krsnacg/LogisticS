@@ -1,8 +1,15 @@
 package com.example.logistics.ui.dashboard
 
+import androidx.compose.animation.core.FastOutSlowInEasing
+import androidx.compose.animation.core.RepeatMode
+import androidx.compose.animation.core.Spring
 import androidx.compose.animation.core.animateDpAsState
 import androidx.compose.animation.core.animateFloatAsState
+import androidx.compose.animation.core.infiniteRepeatable
+import androidx.compose.animation.core.spring
+import androidx.compose.animation.core.tween
 import androidx.compose.foundation.background
+import androidx.compose.foundation.border
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.interaction.MutableInteractionSource
 import androidx.compose.foundation.interaction.collectIsPressedAsState
@@ -28,10 +35,20 @@ import androidx.compose.runtime.getValue
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.draw.drawBehind
+import androidx.compose.ui.geometry.CornerRadius
+import androidx.compose.ui.geometry.Offset
+import androidx.compose.ui.graphics.Brush
+import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.graphics.graphicsLayer
 import androidx.compose.ui.graphics.vector.ImageVector
+import androidx.compose.ui.text.font.Font
+import androidx.compose.ui.text.font.FontFamily
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
+import androidx.compose.ui.unit.sp
+import com.example.logistics.R
 
 @Composable
 fun OperationCard(
@@ -40,58 +57,116 @@ fun OperationCard(
     onClick: () -> Unit
 ) {
     val interactionSource = remember { MutableInteractionSource() }
+    val isPressed by interactionSource.collectIsPressedAsState()
+
+
+    val scale by animateFloatAsState(
+        targetValue = if (isPressed) 0.95f else 1f,
+        animationSpec = spring(dampingRatio = Spring.DampingRatioLowBouncy)
+    )
     val elevation by animateDpAsState(
-        targetValue = if (interactionSource.collectIsPressedAsState().value) 12.dp else 6.dp
+        targetValue = if (isPressed) 4.dp else 12.dp,
+        animationSpec = spring(dampingRatio = Spring.DampingRatioLowBouncy)
+    )
+
+
+    val gradientBackground = Brush.linearGradient(
+        colors = listOf(
+            Color(0xFF9AC6C5),
+            Color(0xFF9AC6C5),
+
+        )
+    )
+
+
+    val glowColor = Color(0xFFFFD54F)
+    val glowAlpha by animateFloatAsState(
+        targetValue = if (isPressed) 0.3f else 0.1f,
+        animationSpec = infiniteRepeatable(
+            animation = tween(1000, easing = FastOutSlowInEasing),
+            repeatMode = RepeatMode.Reverse
+        )
     )
 
     Card(
         modifier = Modifier
-            .padding(8.dp)
+            .padding(16.dp)
             .fillMaxWidth()
-            .height(150.dp)
+            .height(160.dp)
+            .graphicsLayer {
+                scaleX = scale
+                scaleY = scale
+            }
+            .drawBehind {
+                drawRect(
+                    color = glowColor.copy(alpha = glowAlpha),
+                    topLeft = Offset.Zero,
+                    size = size,
+                )
+            }
             .clickable(
                 onClick = onClick,
                 interactionSource = interactionSource,
-                indication = rememberRipple()
+                indication = rememberRipple(color = Color(0xFF9C27B0).copy(alpha = 0.3f))
             ),
         elevation = CardDefaults.cardElevation(defaultElevation = elevation),
         shape = RoundedCornerShape(24.dp),
-        colors = CardDefaults.cardColors(
-            containerColor = MaterialTheme.colorScheme.surface,
-            contentColor = MaterialTheme.colorScheme.onSurface
-        )
+        colors = CardDefaults.cardColors(containerColor = Color.Transparent)
     ) {
-        Column(
+        Box(
             modifier = Modifier
                 .fillMaxSize()
-                .padding(16.dp),
-            verticalArrangement = Arrangement.Center,
-            horizontalAlignment = Alignment.CenterHorizontally
+                .background(gradientBackground),
+            contentAlignment = Alignment.Center
         ) {
-            // Icono dentro de un fondo circular
-            Box(
+            Column(
                 modifier = Modifier
-                    .size(64.dp)
-                    .background(
-                        color = MaterialTheme.colorScheme.primary.copy(alpha = 0.15f),
-                        shape = CircleShape
-                    ),
-                contentAlignment = Alignment.Center
+                    .fillMaxSize()
+                    .padding(24.dp),
+                verticalArrangement = Arrangement.Center,
+                horizontalAlignment = Alignment.CenterHorizontally
             ) {
-                Icon(
-                    imageVector = icon,
-                    contentDescription = title,
-                    tint = MaterialTheme.colorScheme.primary,
-                    modifier = Modifier.size(32.dp)
+                // Soft pastel icon container
+                Box(
+                    modifier = Modifier
+                        .size(50.dp)
+                        .background(
+                            color = Color(0xFF69a7a6).copy(alpha = 0.3f),
+                            shape = CircleShape
+                        )
+                        .border(
+                            width = 1.dp,
+                            color = Color(0xFF69a7a6).copy(alpha = 0.5f),
+                            shape = CircleShape
+                        )
+                        .drawBehind {
+                            drawCircle(
+                                color = Color(0xFF69a7a6).copy(alpha = 0.2f),
+                                radius = size.width / 2,
+                                center = center
+                            )
+                        },
+                    contentAlignment = Alignment.Center
+                ) {
+                    Icon(
+                        imageVector = icon,
+                        contentDescription = title,
+                        tint = Color.Black,
+                        modifier = Modifier.size(30.dp)
+                    )
+                }
+
+                Spacer(modifier = Modifier.height(10.dp))
+
+                Text(
+                    text = title,
+
+                    fontFamily = FontFamily(Font(R.font.montserrat_bold)),
+                    letterSpacing = 1.sp,
+                    color = Color.Black,
+                    textAlign = TextAlign.Center
                 )
             }
-            Spacer(modifier = Modifier.height(12.dp))
-            Text(
-                text = title,
-                style = MaterialTheme.typography.bodyMedium.copy(fontWeight = FontWeight.Bold),
-                textAlign = TextAlign.Center,
-                color = MaterialTheme.colorScheme.onSurface
-            )
         }
     }
 }

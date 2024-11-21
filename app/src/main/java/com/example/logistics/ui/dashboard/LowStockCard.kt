@@ -59,12 +59,12 @@ fun LowStockCard(
             .background(
                 brush = Brush.verticalGradient(
                     colors = listOf(
-                        Color(0xFFFDE9E9),
-                        Color(0xFFFFDCDC)
+                        Color(0xFF7785AC),
+                        Color(0xFF7785AC)
                     )
                 )
             )
-            .clickable { /* Acción cuando se toca la tarjeta */ }
+            .clickable { }
             .shadow(10.dp, RoundedCornerShape(16.dp)),
         shape = RoundedCornerShape(16.dp),
         elevation = CardDefaults.cardElevation(defaultElevation = 0.dp)

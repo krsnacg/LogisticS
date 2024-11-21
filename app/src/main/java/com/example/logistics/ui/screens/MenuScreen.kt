@@ -16,7 +16,6 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.unit.dp
 import kotlinx.coroutines.launch
-
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Spacer
@@ -30,8 +29,11 @@ import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.text.font.Font
+import androidx.compose.ui.text.font.FontFamily
 import androidx.compose.ui.text.font.FontWeight
 import androidx.navigation.NavController
+import com.example.logistics.R
 import com.example.logistics.model.EmpleadoDto
 import com.example.logistics.model.LoginViewModel
 import com.example.logistics.model.MenuItem
@@ -82,7 +84,7 @@ fun MenuScreen(navController: NavController, loginViewModel: LoginViewModel) {
         Scaffold(
             topBar = {
                 TopAppBar(
-                    title = { Text("Dashboard") },
+                    title = { Text("Dashboard", fontFamily = FontFamily(Font(R.font.montserrat_regular))) },
                     navigationIcon = {
                         IconButton(onClick = {
                             scope.launch {
@@ -98,7 +100,7 @@ fun MenuScreen(navController: NavController, loginViewModel: LoginViewModel) {
                         }
                     },
                     colors = TopAppBarDefaults.topAppBarColors(
-                        containerColor = MaterialTheme.colorScheme.primary,
+                        containerColor = Color(0xFF360568),
                         titleContentColor = MaterialTheme.colorScheme.onPrimary,
                         navigationIconContentColor = MaterialTheme.colorScheme.onPrimary,
                         actionIconContentColor = MaterialTheme.colorScheme.onPrimary
@@ -106,16 +108,16 @@ fun MenuScreen(navController: NavController, loginViewModel: LoginViewModel) {
                 )
             },
             content = { paddingValues ->
-                // Agregar scroll vertical al contenido del Dashboard
+
                 Column(
                     modifier = Modifier
-                        .fillMaxSize() // Ocupa el espacio restante
-                        .padding(paddingValues) // Ajusta el contenido al Scaffold
-                        //.verticalScroll(rememberScrollState()) // Scroll vertical
+                        .fillMaxSize()
+                        .padding(paddingValues)
                 ) {
                     DashboardContent(
-                        modifier = Modifier.fillMaxWidth(), // Permite que DashboardContent ocupe el ancho
-                        paddingValues = PaddingValues(0.dp) // Si es necesario ajustar internamente
+                        modifier = Modifier.fillMaxWidth(),
+                        paddingValues = PaddingValues(0.dp),
+                        empleado = uiState.empleado
                     )
                 }
             }

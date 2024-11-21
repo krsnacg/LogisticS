@@ -65,7 +65,7 @@ fun ExpiringSoonCard(
                     )
                 )
             )
-            .clickable { /* Acción cuando se toca la tarjeta */ }
+            .clickable {  }
             .shadow(10.dp, RoundedCornerShape(16.dp)),
         shape = RoundedCornerShape(16.dp),
         elevation = CardDefaults.cardElevation(defaultElevation = 0.dp)

@@ -49,11 +49,11 @@ fun ProductSummary(
         modifier = modifier
             .fillMaxWidth()
             .padding(horizontal = 16.dp, vertical = 12.dp)
-            .background(MaterialTheme.colorScheme.surface) // Agregar fondo para verificar visibilidad
+            .background(MaterialTheme.colorScheme.surface)
             .height(IntrinsicSize.Min),
         verticalAlignment = Alignment.CenterVertically
     ) {
-        // Cantidad de productos y subtítulo
+
         Column(
             modifier = Modifier.weight(1f)
         ) {
@@ -69,7 +69,7 @@ fun ProductSummary(
             )
         }
 
-        // Botón con flecha
+
         Box(
             modifier = Modifier
                 .size(56.dp)
