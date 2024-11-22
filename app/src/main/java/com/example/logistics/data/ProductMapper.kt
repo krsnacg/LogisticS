@@ -11,8 +11,8 @@ fun ProductResponse.toProduct(): Product {
         tipo = formaFarmaceutica.forma,
         precio = price.toString(),
         concentracion = concentracion,
-        presentacion = presentation,
-        descripcion = description,
+        presentacion = presentation ?: "",
+        descripcion = description ?: "",
         cantidad = ""
     )
 }

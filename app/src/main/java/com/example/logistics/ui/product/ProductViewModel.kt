@@ -97,7 +97,7 @@ class ProductViewModel(private val productRepository: ProductRepository) : ViewM
                     Log.e("Error", "Error obtaining products: ${response.message}")
                 }
             } catch (e: Exception) {
-                Log.e("ExceptionGettingAllProducts", e.message.toString())
+                Log.e("ExceptionGettingProducts", e.message.toString())
             } finally {
                 _isLoading.value = false
             }
