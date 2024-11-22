@@ -389,10 +389,27 @@ private val _lowerStockProduct = MutableStateFlow<LowerStockProduct?>(null)
     }
 
     private fun incrementCode(code: String): String {
-        val prefix = code.take(2)
-        val number = code.drop(2).toIntOrNull() ?:0
-        val newNumber = number + 1
-        return "$prefix${newNumber.toString().padStart(4,'0')}"
+        val regex = Regex(pattern = "([A-Z]+)(\\d+)")
+        val matchResult = regex.matchEntire(code)
+        if (matchResult != null) {
+            val (prefix, numberStr) = matchResult.destructured
+            val number = numberStr.toIntOrNull()
+
+            if (number != null) {
+                val newNumber = number + 1
+                val newNumberStr = newNumber.toString().padStart(numberStr.length,'0')
+                return "$prefix$newNumberStr"
+            }
+            else {
+                Log.d("IncrementCode","No se pudo convertir la parte numérica del código: $code")
+            }
+        }
+        throw IllegalArgumentException("El código no tiene el formato esperado: $code")
+//        val maxCodeLength = 6
+//        val prefix = code.take(prefixLength)
+//        val number = code.drop(prefixLength).toIntOrNull() ?:0
+//        val newNumber = number + 1
+//        return "$prefix${newNumber.toString().padStart(maxCodeLength - prefixLength,'0')}"
     }
 
     private fun convertDateFormat(inputDate: String): String {
