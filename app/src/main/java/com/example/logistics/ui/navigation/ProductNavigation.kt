@@ -16,7 +16,7 @@ import com.example.logistics.ui.product.EditProductScreen
 import com.example.logistics.ui.product.ProductViewModel
 
 @Composable
-fun ProductNavigation(navController: NavController, productViewModel: ProductViewModel = viewModel()) {
+fun ProductNavigation(navController: NavController, productViewModel: ProductViewModel = viewModel()): NavController {
 
     val productNavController = rememberNavController()
     val tabs = listOf(
@@ -55,4 +55,5 @@ fun ProductNavigation(navController: NavController, productViewModel: ProductVie
 
     }
 
+    return productNavController
 }

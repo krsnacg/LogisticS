@@ -72,8 +72,8 @@ fun ProductForm(
                 OutlinedTextField(
                     value = product.codigo,
                     onValueChange = {},
-                    enabled = false,
-                    readOnly = true,
+                    enabled = isEditable,
+                    readOnly = !isEditable,
                     label = { Text(text = "Código") }
                 )
                 Spacer(modifier = Modifier.height(8.dp))
