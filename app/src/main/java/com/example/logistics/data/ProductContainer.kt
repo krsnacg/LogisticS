@@ -1,6 +1,8 @@
 package com.example.logistics.data
 
 import com.example.logistics.service.ProductApiService
+import com.google.gson.Gson
+import com.google.gson.GsonBuilder
 import okhttp3.OkHttpClient
 import okhttp3.logging.HttpLoggingInterceptor
 import retrofit2.Retrofit
@@ -22,9 +24,11 @@ class DefaultProductContainer: ProductContainer {
         .addInterceptor(loggingInterceptor)
         .build()
 
+    private val gson: Gson = GsonBuilder().setLenient().create()
+
     private val retrofit: Retrofit = Retrofit.Builder()
         .client(client)
-        .addConverterFactory(GsonConverterFactory.create())
+        .addConverterFactory(GsonConverterFactory.create(gson))
         .baseUrl(BASE_URL)
         .build()
 

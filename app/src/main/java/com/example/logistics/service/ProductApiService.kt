@@ -18,10 +18,10 @@ interface ProductApiService {
     suspend fun updateProductWithBatches(@Body product: ProductRequest): Response<ProductRequest>
 
     @GET("producto/last-code")
-    suspend fun getProductLastCode(): Response<Map<String, String>>
+    suspend fun getProductLastCode(): Response<String> // Response<Map<String,String>>
 
     @GET("lotes/last-code")
-    suspend fun getBatchLastCode(): Response<Map<String,String>>
+    suspend fun getBatchLastCode(): Response<String> // Response<Map<String,String>>
 
     @GET("formas/for-com")
     suspend fun getFormas(): Response<List<String>>

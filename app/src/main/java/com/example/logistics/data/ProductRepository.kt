@@ -19,10 +19,12 @@ class NetworkProductRepository(
     private val productApiService: ProductApiService
 ): ProductRepository {
     override suspend fun getProductLastCode(): String = productApiService
-        .getProductLastCode().body()?.get("code") ?: "ERROR"
+//        .getBatchLastCode().body()?.get("code") ?: "ERROR"
+        .getProductLastCode().body()?: "ERROR"
 
     override suspend fun getBatchLastCode(): String = productApiService
-        .getBatchLastCode().body()?.get("code") ?: "ERROR"
+//        .getBatchLastCode().body()?.get("code") ?: "ERROR"
+        .getBatchLastCode().body()?: "ERROR"
 
     override suspend fun saveProductAndBatches(productRequest: ProductRequest): ApiResponse<String> {
         val response = productApiService.saveProductWithBatches(productRequest)
