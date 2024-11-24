@@ -41,7 +41,7 @@ import com.example.logistics.model.Product
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun EditProductScreen(navController: NavController, viewModel: ProductViewModel = viewModel()) {
+fun EditProductScreen(navController: NavController, viewModel: ProductViewModel ) {
 
     // val codigoState by viewModel.codeState.collectAsState()
     val productList by viewModel.filteredProductList.collectAsState()
