@@ -7,5 +7,6 @@ data class UiState(
     val message: String = "",
     val isLoading: Boolean = false,
     val error: String = "",
-    val empleado: EmpleadoDto? = null
+    val empleado: EmpleadoDto? = null,
+    val rol: String = ""
 )

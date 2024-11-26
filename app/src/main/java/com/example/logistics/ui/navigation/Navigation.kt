@@ -40,7 +40,7 @@ fun AppNavigation() {
             if (navController.currentRoute() != "login") {
 //                if (showBottomBar)
                 //AppBottomBar(navController = navController)
-                NavigationBarSample(navController = navController)
+                NavigationBarSample(navController = navController, loginViewModel = loginViewModel)
             }
         }
     ) { innerPadding ->

@@ -50,6 +50,7 @@ class LoginViewModel:  ViewModel() {
                     val token = loginResponse.body()?.token ?: ""
                     _uiState.value = _uiState.value.copy(token = token)
                     fetchEmpleadoData(token)
+                    fetchRolEmpleado(token)
                 } else {
                     _uiState.value = _uiState.value.copy(
                         error = "Error de login: ${loginResponse.errorBody()?.string()}"
@@ -81,6 +82,15 @@ class LoginViewModel:  ViewModel() {
             }
         } else {
             _uiState.value = _uiState.value.copy(error = "Error al extraer email del token")
+        }
+    }
+
+    private suspend fun fetchRolEmpleado(token: String) {
+        val rol_empleado = TokenUtils.extractRoleFromToken(token)
+        if(rol_empleado != null) {
+
+                _uiState.value = _uiState.value.copy(token = token, rol = rol_empleado)
+
         }
     }
 
