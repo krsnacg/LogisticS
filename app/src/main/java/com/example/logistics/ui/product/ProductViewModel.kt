@@ -31,6 +31,7 @@ import com.example.logistics.data.CategoryChart
 import com.example.logistics.data.ExpiringProduct
 import com.example.logistics.data.LowerStockProduct
 import com.example.logistics.model.BatchRequest
+import com.example.logistics.service.ApiConfig
 import com.example.logistics.service.ProductApiService
 import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
@@ -101,7 +102,7 @@ private val _lowerStockProduct = MutableStateFlow<LowerStockProduct?>(null)
 
     init {
         val retrofit = Retrofit.Builder()
-            .baseUrl("http://10.0.2.2:9000/")
+            .baseUrl(ApiConfig.BASE_URL)
             .addConverterFactory(GsonConverterFactory.create())
             .build()
         productService = retrofit.create(ProductApiService::class.java)

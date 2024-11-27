@@ -7,6 +7,7 @@ import androidx.navigation.NavController
 import com.example.logistics.data.LoginRequest
 import com.example.logistics.data.UiState
 import com.example.logistics.data.repository.EmpleadoRepository
+import com.example.logistics.service.ApiConfig
 
 import com.example.logistics.service.ApiService
 import com.example.logistics.service.EmpleadoService
@@ -27,13 +28,13 @@ class LoginViewModel:  ViewModel() {
 
     init {
         val retrofit = Retrofit.Builder()
-            .baseUrl("http://10.0.2.2:8100/")
+            .baseUrl(ApiConfig.BASE_URL)
             .addConverterFactory(GsonConverterFactory.create())
             .build()
         apiService = retrofit.create(ApiService::class.java)
 
         val retrofitv2 = Retrofit.Builder()
-            .baseUrl("http://10.0.2.2:9000/")
+            .baseUrl(ApiConfig.BASE_URL)
             .addConverterFactory(GsonConverterFactory.create())
             .build()
 

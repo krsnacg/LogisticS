@@ -1,5 +1,6 @@
 package com.example.logistics.data
 
+import com.example.logistics.service.ApiConfig
 import com.example.logistics.service.ProductApiService
 import com.google.gson.Gson
 import com.google.gson.GsonBuilder
@@ -13,7 +14,6 @@ interface ProductContainer {
 }
 
 class DefaultProductContainer: ProductContainer {
-    private val BASE_URL = "http://10.0.2.2:9000/api/almacen/"
 
     private val loggingInterceptor = HttpLoggingInterceptor().apply {
         level = HttpLoggingInterceptor.Level.BODY
@@ -29,7 +29,7 @@ class DefaultProductContainer: ProductContainer {
     private val retrofit: Retrofit = Retrofit.Builder()
         .client(client)
         .addConverterFactory(GsonConverterFactory.create(gson))
-        .baseUrl(BASE_URL)
+        .baseUrl(ApiConfig.BASE_URL)
         .build()
 
     private val retrofitService: ProductApiService by lazy {
