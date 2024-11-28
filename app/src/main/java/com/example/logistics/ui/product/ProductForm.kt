@@ -15,6 +15,7 @@ import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.automirrored.filled.Send
 import androidx.compose.material.icons.filled.Add
 import androidx.compose.material3.Button
 import androidx.compose.material3.CircularProgressIndicator
@@ -27,6 +28,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.unit.dp
+import androidx.compose.ui.unit.sp
 import com.example.logistics.R
 import com.example.logistics.model.Product
 
@@ -38,6 +40,7 @@ fun ProductForm(
     formList: List<String>,
     isEditable: Boolean = false,
     isFormValid: Boolean,
+    isProductUpdatable: Boolean,
     onNameChange: (String) -> Unit,
     onCategoryChange: (String) -> Unit,
     onTypeChange: (String) -> Unit,
@@ -156,13 +159,26 @@ fun ProductForm(
                 .padding(top = 16.dp),
             horizontalArrangement = Arrangement.End
         ) {
-            Button(
-                onClick = onSaveClick,
-                enabled = isFormValid
-            ) {
-                Icon(imageVector = Icons.Default.Add, contentDescription = null)
-                Spacer(modifier = Modifier.width(4.dp))
-                Text(text = stringResource(R.string.generate_batches_button))
+            Column {
+                if (!isEditable) {
+                    Button(
+                        onClick = onCancelClick,
+                        enabled = isProductUpdatable
+                    ) {
+                        Icon(imageVector = Icons.AutoMirrored.Filled.Send, contentDescription = null)
+                        Spacer(modifier = Modifier.width(4.dp))
+                        Text(text = "Actualizar", fontSize = 14.sp)
+                    }
+                    Spacer(modifier = Modifier.width(4.dp))
+                }
+                Button(
+                    onClick = onSaveClick,
+                    enabled = isFormValid
+                ) {
+                    Icon(imageVector = Icons.Default.Add, contentDescription = null)
+                    Spacer(modifier = Modifier.width(4.dp))
+                    Text(text = stringResource(R.string.generate_batches_button), fontSize = 14.sp)
+                }
             }
         }
     }

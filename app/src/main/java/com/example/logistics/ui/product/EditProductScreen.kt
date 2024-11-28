@@ -5,6 +5,7 @@ import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
@@ -77,7 +78,7 @@ fun EditProductScreen(navController: NavController, viewModel: ProductViewModel 
                 onEditSelected = { index ->
                     viewModel.editProductSelected(index)
                     viewModel.toggleEditable(false)
-                    navController.navigate("products/addProduct")
+                    navController.navigate("products/editProduct/$index")
                 }
             )
         }
@@ -113,15 +114,14 @@ fun ProductCard(
     product: Product,
     onEdit: () -> Unit
 ) {
-    Card(modifier = modifier) {
+    Card(modifier = modifier.fillMaxWidth()) {
         Row(
             modifier = Modifier
                 .fillMaxWidth()
                 .padding(horizontal = 8.dp),
             verticalAlignment = Alignment.CenterVertically,
-            horizontalArrangement = Arrangement.SpaceBetween
         ) {
-            Box {
+            Box(modifier = Modifier.padding(end = 8.dp)) {
                 Icon(
                     imageVector = Icons.Default.Info,
                     contentDescription = ""
@@ -131,9 +131,10 @@ fun ProductCard(
                 text = product.nombreProducto + " - " +
                         product.concentracion + " - " +
                         product.presentacion,
-                fontWeight = FontWeight.SemiBold
+                fontWeight = FontWeight.SemiBold,
+                modifier = Modifier.weight(1f)
             )
-            Box {
+            Box(modifier = Modifier.padding(start = 8.dp)) {
                 IconButton(
                     onClick = onEdit
                 ) {
@@ -152,7 +153,7 @@ fun ProductCard(
 fun ProductPreview() {
     val productList = listOf(
         Product(
-            nombreProducto = "PRODUCTO 1",
+            nombreProducto = "PRODUCTO 1 KAKSDASDASDASDASDASD",
             concentracion = "50 mg",
             presentacion = "Caja"
         ),
@@ -166,6 +167,11 @@ fun ProductPreview() {
             concentracion = "200 mg",
             presentacion = "Blister"
         )
+    )
+
+    ProductList(
+        products = productList,
+        onEditSelected = {}
     )
 }
 

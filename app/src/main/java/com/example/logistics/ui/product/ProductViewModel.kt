@@ -212,7 +212,9 @@ private val _lowerStockProduct = MutableStateFlow<LowerStockProduct?>(null)
             try {
                 val response = productRepository.getAllProducts()
                 if (response.status == "success" && response.data?.isNotEmpty() == true) {
-                    _productList.value = response.data
+                    _productList.value = response.data.sortedBy {
+                        it.codigo.filter { char -> char.isDigit() }.toInt()
+                    }
                 } else {
                     Log.e("Error", "Error obtaining products: ${response.message}")
                 }
@@ -266,6 +268,35 @@ private val _lowerStockProduct = MutableStateFlow<LowerStockProduct?>(null)
             } catch (e: Exception) {
                 _saveState.value = Result.failure(e)
                 Log.e("ExceptionAtUpdatingProduct", e.message.toString())
+            } finally {
+                _isLoading.value = false
+            }
+        }
+    }
+
+    fun getProductWithBatches() {
+        viewModelScope.launch {
+            _isLoading.value = true
+            try {
+                val response = productRepository.getProductWithBatches(product.codigo)
+                if (response.status == "success") {
+                    if (batchList.isNotEmpty()) batchList.clear()
+                    response.data?.batches?.forEach { batch ->
+                        batchList.add(Batch(
+                            codigoLote = batch.code,
+                            estadoOperativo = batch.operativeStatus,
+                            estadoDisponibilidad = batch.availabilityState,
+                            estadoSeguridad = batch.securityState,
+                            stock = batch.stock.toString(),
+                            fechaVencimiento = batch.expiredDate
+                        ))
+                    }
+                    Log.d("Success", "Product y Lotes asociados obtenidos $response")
+                } else {
+                    Log.e("Error", "Error al cargar producto y lotes: $response")
+                }
+            } catch (e: IOException) {
+                Log.e("getProductWithBatches", e.message.toString())
             } finally {
                 _isLoading.value = false
             }
@@ -373,8 +404,13 @@ private val _lowerStockProduct = MutableStateFlow<LowerStockProduct?>(null)
         )
     }
 
-    private fun resetProduct() {
+    fun resetProduct() {
         product = Product()
+    }
+
+    fun resetBatches() {
+        if (batchList.isNotEmpty())
+            batchList.clear()
     }
 
     fun resetSaveState() {
@@ -425,6 +461,11 @@ private val _lowerStockProduct = MutableStateFlow<LowerStockProduct?>(null)
     }
 
     fun isProductComplete(): Boolean {
+        return isProductUpdatable() &&
+                product.cantidad.isNotBlank()
+    }
+
+    fun isProductUpdatable(): Boolean {
         return product.codigo.isNotBlank() &&
                 product.nombreProducto.isNotBlank() &&
                 product.categoria.isNotBlank() &&
@@ -432,8 +473,19 @@ private val _lowerStockProduct = MutableStateFlow<LowerStockProduct?>(null)
                 product.precio.isNotBlank() &&
                 product.concentracion.isNotBlank() &&
                 product.presentacion.isNotBlank() &&
-                product.descripcion.isNotBlank() &&
-                product.cantidad.isNotBlank()
+                product.descripcion.isNotBlank()
+    }
+
+    fun isProductModified(): Boolean {
+        return product.codigo.isNotBlank() && (
+                product.nombreProducto.isNotBlank() ||
+                        product.categoria.isNotBlank() ||
+                        product.tipo.isNotBlank() ||
+                        product.precio.isNotBlank() ||
+                        product.concentracion.isNotBlank() ||
+                        product.presentacion.isNotBlank() ||
+                        product.descripcion.isNotBlank() ||
+                        product.cantidad.isNotBlank())
     }
 
     fun areAllBatchesComplete(): Boolean {
@@ -462,7 +514,8 @@ private val _lowerStockProduct = MutableStateFlow<LowerStockProduct?>(null)
 
     fun editProductSelected(index: Int) {
         // Copiar el producto seleccionado, de la lista de productos a la variable product
-        product = _productList.value[index]
+//        product = _productList.value[index]
+        product = filteredProductList.value[index]
     }
 
     fun updateProductName(productName: String) {

@@ -164,6 +164,7 @@ fun DropdownField(
 
 @Composable
 fun AlertDialogExample(
+    isDismissEnabled: Boolean = false,
     onDismissRequest: () -> Unit,
     onConfirmation: () -> Unit,
     dialogTitle: String,
@@ -179,6 +180,12 @@ fun AlertDialogExample(
             TextButton(onClick = { onConfirmation() }) {
                 Text("Confirm")
             }
+        },
+        dismissButton = {
+            if (isDismissEnabled)
+                TextButton(onClick = { onDismissRequest() }) {
+                    Text("Cancel")
+                }
         }
     )
 }

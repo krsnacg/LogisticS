@@ -83,6 +83,7 @@ fun DashboardContent(
             when (operation) {
                 "Registrar producto" -> {
                     try {
+                        productViewModel.toggleEditable(true)
                         navController.navigate("products")
                     } catch (e: Exception) {
                         Log.e("NavigationError", "Error navigating: ${e.message}")
@@ -90,6 +91,7 @@ fun DashboardContent(
                 }
                 "Editar producto" -> {
                     try {
+                        productViewModel.toggleEditable(true)
                         navController.navigate("products")
                     } catch (e: Exception) {
                         Log.e("NavigationError", "Error navigating: ${e.message}")

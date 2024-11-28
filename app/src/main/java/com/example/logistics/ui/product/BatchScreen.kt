@@ -47,6 +47,7 @@ fun BatchScreen(
     val saveState by viewModel.saveState.collectAsState()
     val editableState by viewModel.editableState.collectAsState()
     val isLoading by viewModel.isLoading.collectAsState()
+    var route = remember { mutableStateOf("") }
     Log.d("BatchScreen", "isLoading: $isLoading")
 
     LaunchedEffect(saveState) {
@@ -99,10 +100,12 @@ fun BatchScreen(
                     if (editableState) {
                         viewModel.saveProductAndBatches()
                         viewModel.getProductLastCode()
+                        route.value = "products/addProduct"
                     }
                     else {
                         viewModel.updateProductAndBatches()
                         viewModel.getAllProducts()
+                        route.value = "products/editProduct"
                     }
                     viewModel.toggleEditable(true)
                 },
@@ -117,15 +120,23 @@ fun BatchScreen(
         if (showDialog) {
             AlertDialogExample(
                 onDismissRequest = {
-                    showDialog = false
-                    viewModel.resetSaveState()
+//                    showDialog = false
+//                    viewModel.resetSaveState()
+//                    if (saveState?.isSuccess == true) {
+//                        navController.navigate(route.value) {
+//                            popUpTo(route.value) { inclusive = true }
+//                            launchSingleTop = true
+//                        }
+//                    }
                 },
                 onConfirmation = {
                     showDialog = false
                     viewModel.resetSaveState()
                     if (saveState?.isSuccess == true) {
-                        navController.popBackStack()
-                        navController.popBackStack()
+                        navController.navigate(route.value) {
+                            popUpTo(route.value) { inclusive = true }
+                            launchSingleTop = true
+                        }
                     }
                 },
                 dialogTitle = if (saveState?.isSuccess == true) "Éxito" else "Error",

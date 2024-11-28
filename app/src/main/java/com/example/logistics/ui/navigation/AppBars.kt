@@ -4,6 +4,12 @@ import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.automirrored.filled.ArrowBack
+import androidx.compose.material.icons.automirrored.filled.Article
+import androidx.compose.material.icons.automirrored.filled.Assignment
+import androidx.compose.material.icons.automirrored.filled.ListAlt
+import androidx.compose.material.icons.automirrored.outlined.Article
+import androidx.compose.material.icons.automirrored.outlined.Assignment
+import androidx.compose.material.icons.automirrored.outlined.ListAlt
 import androidx.compose.material.icons.filled.AccountCircle
 import androidx.compose.material.icons.filled.Article
 import androidx.compose.material.icons.filled.Assignment
@@ -144,14 +150,14 @@ fun NavigationBarSample(
             routes = listOf("menu", "cotizacion", "pedidos", "facturas"),
             selectedIcons = listOf(
                 Icons.Filled.Star,
-                Icons.Filled.Assignment,
-                Icons.Filled.ListAlt,
+                Icons.AutoMirrored.Filled.Assignment,
+                Icons.AutoMirrored.Filled.ListAlt,
                 Icons.Filled.Receipt
             ),
             unselectedIcons = listOf(
                 Icons.Outlined.Star,
-                Icons.Outlined.Assignment,
-                Icons.Outlined.ListAlt,
+                Icons.AutoMirrored.Outlined.Assignment,
+                Icons.AutoMirrored.Outlined.ListAlt,
                 Icons.Outlined.Receipt
             )
         )
@@ -161,24 +167,24 @@ fun NavigationBarSample(
             selectedIcons = listOf(
                 Icons.Filled.Star,
                 Icons.Filled.Inventory,
-                Icons.Filled.Article
+                Icons.AutoMirrored.Filled.Article
             ),
             unselectedIcons = listOf(
                 Icons.Outlined.Star,
                 Icons.Outlined.Inventory,
-                Icons.Outlined.Article
+                Icons.AutoMirrored.Outlined.Article
             )
         )
         "ROL_COMPRA" -> NavigationOptions(
             items = listOf("Cotización Compra", "Orden Compra", "Facturas Compra"),
             routes = listOf("cotizacion-compra", "orden-compra", "facturas-compra"),
             selectedIcons = listOf(
-                Icons.Filled.Assignment,
+                Icons.AutoMirrored.Filled.Assignment,
                 Icons.Filled.ShoppingCart,
                 Icons.Filled.Receipt
             ),
             unselectedIcons = listOf(
-                Icons.Outlined.Assignment,
+                Icons.AutoMirrored.Outlined.Assignment,
                 Icons.Outlined.ShoppingCart,
                 Icons.Outlined.Receipt
             )

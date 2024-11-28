@@ -10,6 +10,7 @@ import retrofit2.http.Body
 import retrofit2.http.GET
 import retrofit2.http.POST
 import retrofit2.http.PUT
+import retrofit2.http.Path
 
 interface ProductApiService {
     @GET("producto/listar")
@@ -20,6 +21,9 @@ interface ProductApiService {
 
     @PUT("producto/actualizar-p")
     suspend fun updateProductWithBatches(@Body product: ProductRequest): Response<ProductRequest>
+
+    @GET("producto/buscar-producto/{id}")
+    suspend fun getProductWithBatches(@Path("id") id: String): Response<ProductRequest>
 
     @GET("producto/last-code")
     suspend fun getProductLastCode(): Response<String> // Response<Map<String,String>>
