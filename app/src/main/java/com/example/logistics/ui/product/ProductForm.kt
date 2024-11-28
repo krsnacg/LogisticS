@@ -40,6 +40,7 @@ fun ProductForm(
     formList: List<String>,
     isEditable: Boolean = false,
     isFormValid: Boolean,
+    isProductUpdatable: Boolean,
     onNameChange: (String) -> Unit,
     onCategoryChange: (String) -> Unit,
     onTypeChange: (String) -> Unit,
@@ -162,7 +163,7 @@ fun ProductForm(
                 if (!isEditable) {
                     Button(
                         onClick = onCancelClick,
-                        enabled = isFormValid
+                        enabled = isProductUpdatable
                     ) {
                         Icon(imageVector = Icons.AutoMirrored.Filled.Send, contentDescription = null)
                         Spacer(modifier = Modifier.width(4.dp))

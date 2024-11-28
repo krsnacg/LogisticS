@@ -212,7 +212,9 @@ private val _lowerStockProduct = MutableStateFlow<LowerStockProduct?>(null)
             try {
                 val response = productRepository.getAllProducts()
                 if (response.status == "success" && response.data?.isNotEmpty() == true) {
-                    _productList.value = response.data
+                    _productList.value = response.data.sortedBy {
+                        it.codigo.filter { char -> char.isDigit() }.toInt()
+                    }
                 } else {
                     Log.e("Error", "Error obtaining products: ${response.message}")
                 }
@@ -459,6 +461,11 @@ private val _lowerStockProduct = MutableStateFlow<LowerStockProduct?>(null)
     }
 
     fun isProductComplete(): Boolean {
+        return isProductUpdatable() &&
+                product.cantidad.isNotBlank()
+    }
+
+    fun isProductUpdatable(): Boolean {
         return product.codigo.isNotBlank() &&
                 product.nombreProducto.isNotBlank() &&
                 product.categoria.isNotBlank() &&
@@ -466,8 +473,7 @@ private val _lowerStockProduct = MutableStateFlow<LowerStockProduct?>(null)
                 product.precio.isNotBlank() &&
                 product.concentracion.isNotBlank() &&
                 product.presentacion.isNotBlank() &&
-                product.descripcion.isNotBlank() &&
-                product.cantidad.isNotBlank()
+                product.descripcion.isNotBlank()
     }
 
     fun isProductModified(): Boolean {
@@ -508,7 +514,8 @@ private val _lowerStockProduct = MutableStateFlow<LowerStockProduct?>(null)
 
     fun editProductSelected(index: Int) {
         // Copiar el producto seleccionado, de la lista de productos a la variable product
-        product = _productList.value[index]
+//        product = _productList.value[index]
+        product = filteredProductList.value[index]
     }
 
     fun updateProductName(productName: String) {

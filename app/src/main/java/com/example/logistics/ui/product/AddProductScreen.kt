@@ -48,6 +48,7 @@ fun AddProductScreen(navController: NavController, viewModel: ProductViewModel =
             formList = formList,
             isEditable = editableState,
             isFormValid = viewModel.isProductComplete(),
+            isProductUpdatable = viewModel.isProductUpdatable(),
             onNameChange = {
                 Log.d("TEST",it)
                 viewModel.updateProductName(it)
