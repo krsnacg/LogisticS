@@ -9,4 +9,10 @@
     <string name="edit_button">Edit</string>
     <string name="generate_batches_button">Generar Lotes</string>
     <string name="save_button">Guardar</string>
+
+    //Varibales del NavBar
+    <string name="navbar_opcion1">Principal</string>
+    <string name="navbar_opcion2">Cotización</string>
+    <string name="navbar_opcion3">Pedido</string>
+    <string name="navbar_opcion4">Ajustes</string>
 </resources>
