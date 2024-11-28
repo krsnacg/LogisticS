@@ -10,9 +10,18 @@
     <string name="generate_batches_button">Generar Lotes</string>
     <string name="save_button">Guardar</string>
 
+    //Ejemplo
+    <string name="ejemplo">Ejemplo</string>
+    <string name="campo_codigo_pedido">Codigo Pedido</string>
+
     //Varibales del NavBar
     <string name="navbar_opcion1">Principal</string>
     <string name="navbar_opcion2">Cotización</string>
     <string name="navbar_opcion3">Pedido</string>
     <string name="navbar_opcion4">Ajustes</string>
+
+    //Opciones TopBar
+    <string name="topbar_opcion1">PAGINA PRINCIPAL</string>
+    <string name="topbar_opcion2">  REGISTRAR PEDIDO</string>
+
 </resources>
