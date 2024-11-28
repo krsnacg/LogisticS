@@ -36,8 +36,11 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavController
+import androidx.navigation.compose.rememberNavController
 import com.example.logistics.R
+import com.example.logistics.data.ProductRepository
 import com.example.logistics.model.Product
+import kotlinx.coroutines.flow.MutableStateFlow
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
@@ -167,5 +170,5 @@ fun ProductPreview() {
             presentacion = "Blister"
         )
     )
+    ProductList(products = productList, onEditSelected = {})
 }
-

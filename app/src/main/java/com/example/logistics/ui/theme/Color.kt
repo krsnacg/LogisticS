@@ -2,7 +2,8 @@ package com.example.logistics.ui.theme
 
 import androidx.compose.ui.graphics.Color
 
-val primaryLight = Color(0xFFAAC7FF)//Color(0xFF415F91)
+//val primaryLight = Color(0xFFAAC7FF)//Color(0xFF415F91)
+val primaryLight = Color(0xFFAAC7FF)
 val onPrimaryLight = Color(0xFFFFFFFF)
 val primaryContainerLight = Color(0xFFD6E3FF)
 val onPrimaryContainerLight = Color(0xFF001B3E)
@@ -110,7 +111,8 @@ val surfaceContainerLightHighContrast = Color(0xFFEDEDF4)
 val surfaceContainerHighLightHighContrast = Color(0xFFE7E8EE)
 val surfaceContainerHighestLightHighContrast = Color(0xFFE2E2E9)
 
-val primaryDark = Color(0xFF415F91)//Color(0xFFAAC7FF)
+//val primaryDark = Color(0xFF415F91)//Color(0xFFAAC7FF)
+val primaryDark = Color(0xFFAAC7FF)
 val onPrimaryDark = Color(0xFF0A305F)
 val primaryContainerDark = Color(0xFF274777)
 val onPrimaryContainerDark = Color(0xFFD6E3FF)
@@ -217,3 +219,4 @@ val surfaceContainerLowDarkHighContrast = Color(0xFF191C20)
 val surfaceContainerDarkHighContrast = Color(0xFF1D2024)
 val surfaceContainerHighDarkHighContrast = Color(0xFF282A2F)
 val surfaceContainerHighestDarkHighContrast = Color(0xFF33353A)
+
