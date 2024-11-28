@@ -3,10 +3,12 @@ package com.example.logistics.util.util_pedidos
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.ContentPaste
 import androidx.compose.material.icons.filled.Home
 import androidx.compose.material.icons.filled.MailOutline
 import androidx.compose.material.icons.filled.Search
 import androidx.compose.material.icons.filled.Settings
+import androidx.compose.material.icons.filled.ShoppingCart
 import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.NavigationBar
@@ -49,7 +51,7 @@ fun NavigationBarRecepcionista(
         )
 
         NavigationBarItem(
-            icon = { Icon(imageVector = Icons.Default.MailOutline, contentDescription = "Registrar OST") },
+            icon = { Icon(imageVector = Icons.Default.ContentPaste, contentDescription = "Registrar OST") },
             label = {
                 Text(text = stringResource(R.string.navbar_opcion2),
                     style = MaterialTheme.typography.labelMedium,
@@ -59,7 +61,7 @@ fun NavigationBarRecepcionista(
         )
 
         NavigationBarItem(
-            icon = { Icon(imageVector = Icons.Default.Search, contentDescription = "Buscar OST") },
+            icon = { Icon(imageVector = Icons.Default.ShoppingCart, contentDescription = "Buscar OST") },
             label = {
                 Text(text = stringResource(R.string.navbar_opcion3),
                     style = MaterialTheme.typography.labelMedium,

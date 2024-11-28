@@ -13,6 +13,24 @@
     //Ejemplo
     <string name="ejemplo">Ejemplo</string>
     <string name="campo_codigo_pedido">Codigo Pedido</string>
+    <string name="campo_codigo_cotizacion">Codigo Cotización</string>
+    <string name="campo_codigo_cliente">Codigo Cliente</string>
+
+    <string name="campo_fecha_entrega">Fecha de entrega</string>
+    <string name="campo_fecha_emision">Fecha de emisión</string>
+
+    <string name="desplegable_estado_envio">Estado Envio</string>
+    //desplegable estado envio
+    <string name="desplegable_estado_envio1">Pendiente1</string>
+    <string name="desplegable_estado_envio2">Pendiente2</string>
+    <string name="desplegable_estado_envio3">Pendiente3</string>
+
+    <string name="desplegable_metodo_pago">Metodo de pago</string>
+    //desplegable Metodo de pago
+    <string name="desplegable_metodo_pago1">Efectivo1</string>
+    <string name="desplegable_metodo_pago2">Efectivo2</string>
+    <string name="desplegable_metodo_pago3">Efectivo3</string>
+    <string name="desplegable_metodo_pago4">Efectivo4</string>
 
     //Varibales del NavBar
     <string name="navbar_opcion1">Principal</string>
