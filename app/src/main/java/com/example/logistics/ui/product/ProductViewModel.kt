@@ -272,6 +272,35 @@ private val _lowerStockProduct = MutableStateFlow<LowerStockProduct?>(null)
         }
     }
 
+    fun getProductWithBatches() {
+        viewModelScope.launch {
+            _isLoading.value = true
+            try {
+                val response = productRepository.getProductWithBatches(product.codigo)
+                if (response.status == "success") {
+                    if (batchList.isNotEmpty()) batchList.clear()
+                    response.data?.batches?.forEach { batch ->
+                        batchList.add(Batch(
+                            codigoLote = batch.code,
+                            estadoOperativo = batch.operativeStatus,
+                            estadoDisponibilidad = batch.availabilityState,
+                            estadoSeguridad = batch.securityState,
+                            stock = batch.stock.toString(),
+                            fechaVencimiento = batch.expiredDate
+                        ))
+                    }
+                    Log.d("Success", "Product y Lotes asociados obtenidos $response")
+                } else {
+                    Log.e("Error", "Error al cargar producto y lotes: $response")
+                }
+            } catch (e: IOException) {
+                Log.e("getProductWithBatches", e.message.toString())
+            } finally {
+                _isLoading.value = false
+            }
+        }
+    }
+
     fun getProductLastCode() {
         viewModelScope.launch {
             _isLoading.value = true
@@ -373,8 +402,13 @@ private val _lowerStockProduct = MutableStateFlow<LowerStockProduct?>(null)
         )
     }
 
-    private fun resetProduct() {
+    fun resetProduct() {
         product = Product()
+    }
+
+    fun resetBatches() {
+        if (batchList.isNotEmpty())
+            batchList.clear()
     }
 
     fun resetSaveState() {
@@ -434,6 +468,18 @@ private val _lowerStockProduct = MutableStateFlow<LowerStockProduct?>(null)
                 product.presentacion.isNotBlank() &&
                 product.descripcion.isNotBlank() &&
                 product.cantidad.isNotBlank()
+    }
+
+    fun isProductModified(): Boolean {
+        return product.codigo.isNotBlank() && (
+                product.nombreProducto.isNotBlank() ||
+                        product.categoria.isNotBlank() ||
+                        product.tipo.isNotBlank() ||
+                        product.precio.isNotBlank() ||
+                        product.concentracion.isNotBlank() ||
+                        product.presentacion.isNotBlank() ||
+                        product.descripcion.isNotBlank() ||
+                        product.cantidad.isNotBlank())
     }
 
     fun areAllBatchesComplete(): Boolean {
