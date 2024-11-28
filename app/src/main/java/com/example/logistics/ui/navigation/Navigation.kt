@@ -15,6 +15,7 @@ import androidx.navigation.compose.composable
 import androidx.navigation.compose.currentBackStackEntryAsState
 import androidx.navigation.compose.rememberNavController
 import com.example.logistics.model.LoginViewModel
+import com.example.logistics.ui.cotizacion.CotizacionViewModel
 import com.example.logistics.ui.login.LoginScreen
 import com.example.logistics.ui.product.AddProductScreen
 import com.example.logistics.ui.product.BatchScreen
@@ -31,6 +32,9 @@ fun AppNavigation() {
     val loginViewModel: LoginViewModel = viewModel()
 
     var productNavController by remember { mutableStateOf<NavController?>(null) }
+
+    val cotizacionViewModel: CotizacionViewModel = viewModel()
+
     Scaffold(
         /*topBar = {
             if (navController.currentRoute() != "login")
@@ -54,6 +58,7 @@ fun AppNavigation() {
                 composable(route = "login") { LoginScreen(navController, loginViewModel) }
                 composable(route = "menu") {  MenuScreen(navController, loginViewModel, productViewModel) }
                 composable(route = "products") { productNavController = ProductNavigation(navController, productViewModel) }
+                composable(route = "cotizaciones") { CotizacionNavigation(navController, cotizacionViewModel, productViewModel) }
 
             }
 //        }

@@ -40,7 +40,7 @@ class ProductViewModel(private val productRepository: ProductRepository) : ViewM
 
 //    private val _codeState = MutableStateFlow(value = "")
 //    val codeState: StateFlow<String> = _codeState.asStateFlow()
-private val _lowerStockProduct = MutableStateFlow<LowerStockProduct?>(null)
+    private val _lowerStockProduct = MutableStateFlow<LowerStockProduct?>(null)
     val lowerStockProduct: StateFlow<LowerStockProduct?> get() = _lowerStockProduct
     private val _expiringProduct = MutableStateFlow<ExpiringProduct?>(null)
     val expiringProduct: StateFlow<ExpiringProduct?> get() = _expiringProduct
@@ -57,24 +57,28 @@ private val _lowerStockProduct = MutableStateFlow<LowerStockProduct?>(null)
     private val _lastCodeProduct = MutableStateFlow<String?>(null)
     val lastCodeProduct: StateFlow<String?> get() = _lastCodeProduct
 
-    private val _isLoading = MutableStateFlow(false)
-    val isLoading: StateFlow<Boolean> = _isLoading.asStateFlow()
+
 
     private val _saveState = MutableStateFlow<Result<String>?>(null)
     val saveState: StateFlow<Result<String>?> = _saveState.asStateFlow()
     private val _editableState = MutableStateFlow(value = true)
     val editableState: StateFlow<Boolean> = _editableState.asStateFlow()
 
-    private val _productList = MutableStateFlow<List<Product>>(value = emptyList())
-//    val productList: StateFlow<List<Product>> = _productList.asStateFlow()
+
+   // val productList: StateFlow<List<Product>> = _productList.asStateFlow()
 
     private val _categoryList = MutableStateFlow<List<String>>(value = emptyList())
     val categoryList: StateFlow<List<String>> = _categoryList.asStateFlow()
     private val _formList = MutableStateFlow<List<String>>(value = emptyList())
     val formList: StateFlow<List<String>> = _formList.asStateFlow()
 
+
+    private val _productList = MutableStateFlow<List<Product>>(value = emptyList())
     private val _searchQuery = MutableStateFlow("")
     val searchQuery: StateFlow<String> = _searchQuery
+
+    private val _isLoading = MutableStateFlow(false)
+    val isLoading: StateFlow<Boolean> = _isLoading.asStateFlow()
 
     val filteredProductList = _searchQuery
         .combine(_productList) { query, products ->

@@ -141,7 +141,7 @@ fun NavigationBarSample(
     val navigationOptions = when (uiState.rol) {
         "ROL_VENTA" -> NavigationOptions(
             items = listOf("Principal", "Cotización", "Pedidos", "Facturas"),
-            routes = listOf("menu", "cotizacion", "pedidos", "facturas"),
+            routes = listOf("menu", "cotizaciones", "pedidos", "facturas"),
             selectedIcons = listOf(
                 Icons.Filled.Star,
                 Icons.Filled.Assignment,
