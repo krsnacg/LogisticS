@@ -15,6 +15,7 @@
     <string name="campo_codigo_pedido">Codigo Pedido</string>
     <string name="campo_codigo_cotizacion">Codigo Cotización</string>
     <string name="campo_codigo_cliente">Codigo Cliente</string>
+    <string name="campo_codigo_empleado">Codigo Empleado</string>
 
     <string name="campo_fecha_entrega">Fecha de entrega</string>
     <string name="campo_fecha_emision">Fecha de emisión</string>
@@ -38,8 +39,15 @@
     <string name="navbar_opcion3">Pedido</string>
     <string name="navbar_opcion4">Ajustes</string>
 
+    //Actualizar pedido
+
     //Opciones TopBar
     <string name="topbar_opcion1">PAGINA PRINCIPAL</string>
     <string name="topbar_opcion2">  REGISTRAR PEDIDO</string>
+    <string name="topbar_opcion3">  ACTUALIZAR PEDIDO</string>
+
+    //Boton registrar pedido
+    <string name="boton_registrar_pedido">Registrar</string>
+    <string name="boton_actualizar_pedido">Actualizar</string>
 
 </resources>

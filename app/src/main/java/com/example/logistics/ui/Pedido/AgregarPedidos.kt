@@ -3,12 +3,16 @@ package com.example.logistics.ui.Pedido
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
+import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.AddShoppingCart
 import androidx.compose.material.icons.filled.ArrowDropDown
+import androidx.compose.material.icons.filled.NavigateNext
+import androidx.compose.material3.Button
 import androidx.compose.material3.DropdownMenu
 import androidx.compose.material3.DropdownMenuItem
 import androidx.compose.material3.Icon
@@ -27,6 +31,7 @@ import androidx.compose.ui.unit.dp
 import com.example.logistics.R
 import com.example.logistics.ui.theme.LogisticSTheme
 import com.example.logistics.util.util_pedidos.NavigationBarRecepcionista
+import com.example.logistics.util.util_pedidos.ScrollBarSecundario
 import com.example.logistics.util.util_pedidos.TopBar
 
 @Composable
@@ -35,10 +40,15 @@ fun RegistroPedido(
     ){
     val expandedEstadoEnvio = rememberSaveable { mutableSetOf(false)}
     val expandedMetodoPago = rememberSaveable { mutableSetOf(false) }
+    var opcionSeleccionada = 1//rememberSaveable { mutableSetOf(1)}
+    val listaPedidos = listOf(
+        "Registrar Pedido",
+        "Actualizar Pedido"
+    )
     Scaffold (topBar = {
         TopBar(tituloPagina = stringResource(R.string.topbar_opcion2), modo = "Retroceder")
     },
-        bottomBar = { NavigationBarRecepcionista(opcionSeleccionada = 2) }
+        bottomBar = { NavigationBarRecepcionista(opcionSeleccionada = 1) }
     ){paddingValues ->
         LazyColumn (
             modifier = Modifier
@@ -47,14 +57,13 @@ fun RegistroPedido(
             horizontalAlignment = Alignment.CenterHorizontally,
             verticalArrangement = Arrangement.Center
             ){
-            item {
-                Text(
-                    text = stringResource(id = R.string.topbar_opcion2),
-                    style = MaterialTheme.typography.headlineMedium,
-                    color = MaterialTheme.colorScheme.primary,
-                    modifier = modifier.padding(start = 20.dp, end = 20.dp, bottom = 40.dp, top = 30.dp)
-                )
+            item { ScrollBarSecundario (
+                listaElementos = listaPedidos,
+                indiceInicial = opcionSeleccionada,
+                onElementoSeleccionado = { opcionSeleccionada = it }
+            )
             }
+
             item {
                 OutlinedTextField(
                     value =  stringResource(id = R.string.ejemplo),
@@ -249,6 +258,29 @@ fun RegistroPedido(
                         .padding(start = 20.dp, end = 20.dp, bottom = 20.dp)
                 )
             }
+            //Boton
+            item {
+
+                Spacer(modifier = Modifier.padding(5.dp))
+
+                Box(
+                    modifier = Modifier.fillMaxWidth(),
+                    contentAlignment = Alignment.CenterEnd
+                ) {
+                    Button(
+                        onClick = { },
+                        modifier = Modifier.padding(end = 15.dp)
+                    ) {
+                        Icon(
+                            imageVector = Icons.Default.AddShoppingCart,
+                            contentDescription = null
+                        )
+                        Text(text = stringResource(id = R.string.boton_registrar_pedido))
+                    }
+                }
+            }
+
+
 
             
         }
