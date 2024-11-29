@@ -85,7 +85,7 @@ fun FormularioCliente(
             readOnly = true // Hace el campo de solo lectura
         )
         // Campos de texto
-       // CampoTexto(label = "ID Cliente", valor = idCliente, onValueChange = { idCliente = it })
+       //CampoTexto(label = "ID Cliente", valor = idCliente, onValueChange = { idCliente = it })
         CampoTexto(label = "Empresa", valor = empresa, onValueChange = { empresa = it })
         CampoTexto(label = "Representante", valor = representante, onValueChange = { representante = it })
         CampoTexto(label = "DNI", valor = dni, onValueChange = { dni = it })

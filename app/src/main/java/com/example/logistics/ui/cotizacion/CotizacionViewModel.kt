@@ -24,10 +24,12 @@ import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.combine
 import kotlinx.coroutines.flow.stateIn
 import kotlinx.coroutines.launch
+import okhttp3.OkHttpClient
 import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
 import java.io.File
 import java.io.FileOutputStream
+import java.util.concurrent.TimeUnit
 
 class CotizacionViewModel(): ViewModel() {
 
@@ -55,8 +57,15 @@ class CotizacionViewModel(): ViewModel() {
         val gson = GsonBuilder()
             .setLenient()  // Agrega esta línea para ser más tolerante con JSON malformado
             .create()
+        val okHttpClient = OkHttpClient.Builder()
+            .connectTimeout(1, TimeUnit.MINUTES) // Tiempo de conexión máximo
+            .readTimeout(1, TimeUnit.MINUTES)    // Tiempo máximo para leer los datos
+            .writeTimeout(1, TimeUnit.MINUTES)   // Tiempo máximo para escribir los datos
+            .build()
+
         val retrofit = Retrofit.Builder()
             .baseUrl("http://10.0.2.2:9000/")
+            .client(okHttpClient)
             .addConverterFactory(GsonConverterFactory.create(gson))
             .build()
 
@@ -131,10 +140,10 @@ class CotizacionViewModel(): ViewModel() {
                 if (response.isSuccessful) {
                     _cotizaciones.value = response.body() ?: emptyList()
                 } else {
-                    Log.e("ERROR_FETCH", "Error al obtener cotizaciones: ${response.errorBody()?.string()}")
+                    Log.e("ERROR1_FETCH_COTI", "Error al obtener cotizaciones: ${response.errorBody()?.string()}")
                 }
             } catch (e: Exception) {
-                Log.e("ERROR_FETCH", e.message.toString())
+                Log.e("ERROR2_FETCH_COTI_2", e.message.toString())
             }
         }
     }
