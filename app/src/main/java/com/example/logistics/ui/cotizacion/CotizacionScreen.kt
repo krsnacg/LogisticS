@@ -34,14 +34,19 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavController
+import androidx.navigation.NavHostController
+import com.example.logistics.model.Cliente
 import com.example.logistics.model.Cotizacion
+import com.example.logistics.ui.cliente.ClienteViewModel
 import java.text.SimpleDateFormat
 import java.util.Locale
 
 @Composable
 fun CotizacionScreen(
     navController: NavController,
-   viewModel: CotizacionViewModel// Asume que usas Hilt para la inyección de dependencias
+   viewModel: CotizacionViewModel,
+    navHostController: NavHostController,
+    clienteViewModel: ClienteViewModel// Asume que usas Hilt para la inyección de dependencias
 ) {
     val cotizaciones by viewModel.cotizaciones.collectAsState()
     var searchQuery by remember { mutableStateOf("") }
@@ -85,7 +90,9 @@ fun CotizacionScreen(
                         Log.e("COTI SELECCIONADA", clickedCotizacion.toString())
                         navController.navigate("cotizacion/edit")
 
-                    }
+                    },
+                    navHostController = navHostController,
+                    clienteViewModel = clienteViewModel
                 )
             }
         }
@@ -121,7 +128,7 @@ fun DropdownMenuFilter(
 }
 
 @Composable
-fun CotizacionItem(viewModel: CotizacionViewModel,cotizacion: Cotizacion, onActionClick: (Cotizacion) -> Unit) {
+fun CotizacionItem(viewModel: CotizacionViewModel,cotizacion: Cotizacion, onActionClick: (Cotizacion) -> Unit, navHostController: NavController, clienteViewModel: ClienteViewModel) {
     val context = LocalContext.current
 
     Card(
@@ -159,6 +166,35 @@ fun CotizacionItem(viewModel: CotizacionViewModel,cotizacion: Cotizacion, onActi
                     viewModel.downloadAndSharePdf(context, cotizacion.idcotizacion)
                 }) {
                     Text("pdf")
+                }
+
+                Button(onClick = {
+                    val cliente = Cliente(
+                        id_cliente = "",
+                        empresa = "",
+                        representante = cotizacion.nombrecliente,
+                        dni = cotizacion.dni,
+                        email = cotizacion.email,
+                        telefono = "",
+                        direccion = "",
+                        nombre_departamento = cotizacion.departamento
+                    )
+                    //clienteViewModel.findByDni(cliente)
+
+                    clienteViewModel.verificarCliente(cliente) { resultado ->
+                        if (resultado) {
+                            // Cliente encontrado, no navega a otra vista
+                            Log.d("VERIFICAR_CLIENTE", "Cliente encontrado")
+                        } else {
+                            Log.d("NO_VERIFICAR_CLIENTE", "Cliente NO encontrado")
+                            clienteViewModel.setPosibleCliente(cliente)
+                            navHostController.navigate("clientes")
+                        }
+                    }
+                    //clienteViewModel.setPosibleCliente(cliente)
+
+                }) {
+                    Text("Pedido")
                 }
             }
         }

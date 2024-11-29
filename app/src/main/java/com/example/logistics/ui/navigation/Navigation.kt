@@ -15,6 +15,7 @@ import androidx.navigation.compose.composable
 import androidx.navigation.compose.currentBackStackEntryAsState
 import androidx.navigation.compose.rememberNavController
 import com.example.logistics.model.LoginViewModel
+import com.example.logistics.ui.cliente.ClienteViewModel
 import com.example.logistics.ui.cotizacion.CotizacionViewModel
 import com.example.logistics.ui.dashboard.venta.SalesDashboard
 import com.example.logistics.ui.login.LoginScreen
@@ -35,6 +36,7 @@ fun AppNavigation() {
     var productNavController by remember { mutableStateOf<NavController?>(null) }
 
     val cotizacionViewModel: CotizacionViewModel = viewModel()
+    val clienteViewModel: ClienteViewModel = viewModel()
 
     Scaffold(
         /*topBar = {
@@ -60,8 +62,8 @@ fun AppNavigation() {
                 composable(route = "menu") {  MenuScreen(navController, loginViewModel, productViewModel,cotizacionViewModel) }
                 //composable(route = "menu_venta") { SalesDashboard()  }
                 composable(route = "products") { productNavController = ProductNavigation(navController, productViewModel) }
-                composable(route = "cotizaciones") { CotizacionNavigation(navController, cotizacionViewModel, productViewModel) }
-
+                composable(route = "cotizaciones") { CotizacionNavigation(navController, cotizacionViewModel, productViewModel, clienteViewModel) }
+                composable(route = "clientes") { ClienteNavigation(navController,clienteViewModel)  }
             }
 //        }
     }

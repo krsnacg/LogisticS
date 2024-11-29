@@ -9,6 +9,7 @@ import androidx.compose.material.icons.filled.Article
 import androidx.compose.material.icons.filled.Assignment
 import androidx.compose.material.icons.filled.Inventory
 import androidx.compose.material.icons.filled.ListAlt
+import androidx.compose.material.icons.filled.Person
 import androidx.compose.material.icons.filled.Receipt
 import androidx.compose.material.icons.filled.Settings
 import androidx.compose.material.icons.filled.ShoppingCart
@@ -17,6 +18,7 @@ import androidx.compose.material.icons.outlined.Article
 import androidx.compose.material.icons.outlined.Assignment
 import androidx.compose.material.icons.outlined.Inventory
 import androidx.compose.material.icons.outlined.ListAlt
+import androidx.compose.material.icons.outlined.Person
 import androidx.compose.material.icons.outlined.Receipt
 import androidx.compose.material.icons.outlined.ShoppingCart
 import androidx.compose.material.icons.outlined.Star
@@ -140,17 +142,19 @@ fun NavigationBarSample(
     // Definir las opciones de navegación basadas en el rol
     val navigationOptions = when (uiState.rol) {
         "ROL_VENTA" -> NavigationOptions(
-            items = listOf("Principal", "Cotización", "Pedidos", "Facturas"),
-            routes = listOf("menu", "cotizaciones", "pedidos", "facturas"),
+            items = listOf("Principal", "Cotización","Clientes", "Pedidos", "Facturas"),
+            routes = listOf("menu", "cotizaciones","clientes", "pedidos", "facturas"),
             selectedIcons = listOf(
                 Icons.Filled.Star,
                 Icons.Filled.Assignment,
+                Icons.Filled.Person,
                 Icons.Filled.ListAlt,
                 Icons.Filled.Receipt
             ),
             unselectedIcons = listOf(
                 Icons.Outlined.Star,
                 Icons.Outlined.Assignment,
+                Icons.Outlined.Person,
                 Icons.Outlined.ListAlt,
                 Icons.Outlined.Receipt
             )

@@ -6,31 +6,31 @@ import androidx.compose.material3.TabRow
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.navigation.NavController
-import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
 import com.example.logistics.ui.cliente.ClienteViewModel
+import com.example.logistics.ui.cliente.FormularioCliente
+import com.example.logistics.ui.cliente.ListaClientes
 import com.example.logistics.ui.cotizacion.CotizacionScreen
 import com.example.logistics.ui.cotizacion.CotizacionViewModel
 import com.example.logistics.ui.cotizacion.EditCotizacion
-
 import com.example.logistics.ui.cotizacion.QuotationForm
 import com.example.logistics.ui.product.ProductViewModel
 
 @Composable
-fun CotizacionNavigation(navHostController: NavHostController, cotizacionViewModel: CotizacionViewModel, productViewModel: ProductViewModel, clienteViewModel: ClienteViewModel) {
+fun ClienteNavigation(navController: NavController, clienteViewModel: ClienteViewModel) {
 
-    val cotizacionNavController = rememberNavController()
+    val clienteNavController = rememberNavController()
 
     val tabs = listOf(
-        "cotizacion/new" to "crear",
-        "cotizacion/list" to "lista",
-        "cotizacion/edit" to "actualizar"
+        "cliente/new" to "crear",
+        "cliente/list" to "lista",
+        "cliente/edit" to "actualizar"
     )
 
     Column {
-        val currentDestination = cotizacionNavController.currentRoute()
+        val currentDestination = clienteNavController.currentRoute()
         val selectedTabIndex = tabs.indexOfFirst { it.first == currentDestination }
 
         TabRow(
@@ -41,7 +41,7 @@ fun CotizacionNavigation(navHostController: NavHostController, cotizacionViewMod
                 Tab(
                     selected = index == selectedTabIndex,
                     onClick = {
-                        cotizacionNavController.navigate(screen)
+                        clienteNavController.navigate(screen)
                     },
                     text = { Text(text = title) }
                 )
@@ -50,17 +50,17 @@ fun CotizacionNavigation(navHostController: NavHostController, cotizacionViewMod
         }
 
         NavHost(
-            navController = cotizacionNavController,
-            startDestination = "cotizacion/new"
+            navController = clienteNavController,
+            startDestination = "cliente/list"
         ) {
-            composable(route = "cotizacion/new") {
-                QuotationForm(cotizacionViewModel, productViewModel)
+            composable(route = "cliente/new") {
+                FormularioCliente(clienteViewModel)
             }
-            composable(route = "cotizacion/list") {
-                CotizacionScreen(cotizacionNavController,cotizacionViewModel, navHostController, clienteViewModel)
+            composable(route = "cliente/list") {
+                ListaClientes(clienteViewModel)
             }
-            composable(route = "cotizacion/edit") {
-                EditCotizacion( cotizacionNavController,cotizacionViewModel, productViewModel)
+            composable(route = "cliente/edit") {
+
             }
         }
 
