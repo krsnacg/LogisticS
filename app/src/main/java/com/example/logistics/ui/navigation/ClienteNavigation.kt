@@ -12,6 +12,7 @@ import androidx.navigation.compose.rememberNavController
 import com.example.logistics.ui.cliente.ClienteViewModel
 import com.example.logistics.ui.cliente.FormularioCliente
 import com.example.logistics.ui.cliente.ListaClientes
+import com.example.logistics.ui.cliente.UpdateClienteForm
 import com.example.logistics.ui.cotizacion.CotizacionScreen
 import com.example.logistics.ui.cotizacion.CotizacionViewModel
 import com.example.logistics.ui.cotizacion.EditCotizacion
@@ -57,10 +58,10 @@ fun ClienteNavigation(navController: NavController, clienteViewModel: ClienteVie
                 FormularioCliente(clienteViewModel)
             }
             composable(route = "cliente/list") {
-                ListaClientes(clienteViewModel)
+                ListaClientes(clienteViewModel, clienteNavController)
             }
             composable(route = "cliente/edit") {
-
+                UpdateClienteForm(clienteViewModel, clienteNavController)
             }
         }
 

@@ -266,6 +266,7 @@ fun EditCotizacion(navController: NavController ,cotizacionViewModel: Cotizacion
                     montoProductos = 0.00
                     montoImpuestos = 0.00
                     montoTotal = 0.00
+                    cotizacionViewModel.clearCotizacionSelected()
                 },
                 modifier = Modifier.weight(1f)
             ) {

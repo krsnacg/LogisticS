@@ -160,6 +160,10 @@ class CotizacionViewModel(): ViewModel() {
         _selectedCotizacion.value = cotizacion
     }
 
+    fun clearCotizacionSelected() {
+        _selectedCotizacion.value = null
+    }
+
     fun downloadAndSharePdf(context: Context, id: String) {
         viewModelScope.launch {
             try {

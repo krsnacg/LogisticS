@@ -15,6 +15,7 @@ import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.launch
 import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
+import java.lang.Thread.State
 
 class ClienteViewModel(): ViewModel() {
 
@@ -28,6 +29,9 @@ class ClienteViewModel(): ViewModel() {
 
     private val _cotizacionCliente = MutableStateFlow<IdClienteResponse?>(null)
     val cotizacionCliente: StateFlow<IdClienteResponse?> get() = _cotizacionCliente
+
+    private val _selectedCliente = MutableStateFlow<Cliente?>(null)
+    val selectedCliente: StateFlow<Cliente?> get() = _selectedCliente
 
 
     init {
@@ -76,6 +80,15 @@ class ClienteViewModel(): ViewModel() {
         }
     }
 
+    fun updateCliente(cliente: Cliente) {
+        viewModelScope.launch {
+            try {
+                clienteService.updateCliente(cliente)
+            }catch (e: Exception) {
+                Log.e("ERROR_GUARDAR_CLIENT", e.message.toString())
+            }
+        }
+    }
 
     fun setPosibleCliente(cliente: Cliente) {
         _posibleCliente.value = cliente
@@ -83,5 +96,13 @@ class ClienteViewModel(): ViewModel() {
 
     fun clearPosibleCliente() {
         _posibleCliente.value = null
+    }
+
+    fun selectedCliente(cliente: Cliente) {
+        _selectedCliente.value = cliente
+    }
+
+    fun clearClienteSelected() {
+        _selectedCliente.value = null
     }
 }
