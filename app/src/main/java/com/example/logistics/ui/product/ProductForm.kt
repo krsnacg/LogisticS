@@ -75,7 +75,7 @@ fun ProductForm(
                 OutlinedTextField(
                     value = product.codigo,
                     onValueChange = {},
-                    enabled = isEditable,
+                    enabled = false,
                     readOnly = !isEditable,
                     label = { Text(text = "Código") }
                 )
