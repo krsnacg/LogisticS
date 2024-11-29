@@ -3,6 +3,7 @@ package com.example.logistics.ui.factura
 import android.util.Log
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.example.logistics.model.Cliente
 import com.example.logistics.model.Factura
 import com.example.logistics.service.ClientService
 import com.example.logistics.service.FacturaService
@@ -23,6 +24,9 @@ class FacturaViewModel(): ViewModel() {
     private val _posibleFactura = MutableStateFlow<Factura?>(null)
     val posibleFactura: StateFlow<Factura?> get() = _posibleFactura
 
+    private val _selectedFactura = MutableStateFlow<Factura?>(null)
+    val selectedFactura: StateFlow<Factura?> get() = _selectedFactura
+
 
     init {
         val gson = GsonBuilder()
@@ -41,29 +45,48 @@ class FacturaViewModel(): ViewModel() {
             try {
                 _facturas.value = facturaService.getFactura().body()!!
             }catch (e: Exception) {
-                Log.e("ERROR_LISTA_CLIENTE", e.message.toString())
+                Log.e("ERROR_LISTA_FACTURA", e.message.toString())
             }
 
         }
     }
 
-    fun createFactura() {
+    fun createFactura(factura: Factura) {
         viewModelScope.launch {
             try {
-                facturaService.createFactura(facturas)
+                facturaService.createFactura(factura)
             } catch (e: Exception) {
-                Log.e("ERROR_GUARDAR_CLIENT", e.message.toString())
+                Log.e("ERROR_GUARDAR_FACTURA", e.message.toString())
             }
         }
     }
 
-    fun updateFactura(){
+    fun updateFactura(factura: Factura) {
         viewModelScope.launch {
             try {
-                facturaService.updateFactura(facturas)
+                facturaService.updateFactura(factura)
             } catch (e: Exception) {
-                Log.e("ERROR_GUARDAR_CLIENT", e.message.toString())
+                Log.e("ERROR_ACTUALIZAR_FACTURA", e.message.toString())
+            }
+        }
+    }
+
+    fun setPosibleCliente(factura: Factura) {
+        _posibleFactura.value = factura
+    }
+
+    fun clearPosibleCliente() {
+        _posibleFactura.value = null
+    }
+
+    fun selectedCliente(factura: Factura) {
+        _selectedFactura.value = factura
+    }
+
+    fun clearFacturaSelected(){
+        _posibleFactura.value = null
     }
 }
+
 
 

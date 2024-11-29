@@ -106,3 +106,4 @@ class ClienteViewModel(): ViewModel() {
         _selectedCliente.value = null
     }
 }
+

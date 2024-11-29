@@ -17,7 +17,9 @@ import androidx.navigation.compose.rememberNavController
 import com.example.logistics.model.LoginViewModel
 import com.example.logistics.ui.cliente.ClienteViewModel
 import com.example.logistics.ui.cotizacion.CotizacionViewModel
+import com.example.logistics.ui.factura.VistaFacturas
 import com.example.logistics.ui.dashboard.venta.SalesDashboard
+import com.example.logistics.ui.factura.FacturaViewModel
 import com.example.logistics.ui.login.LoginScreen
 import com.example.logistics.ui.product.AddProductScreen
 import com.example.logistics.ui.product.BatchScreen
@@ -37,6 +39,7 @@ fun AppNavigation() {
 
     val cotizacionViewModel: CotizacionViewModel = viewModel()
     val clienteViewModel: ClienteViewModel = viewModel()
+    val facturaViewModel: FacturaViewModel = viewModel()
 
     Scaffold(
         /*topBar = {
@@ -64,6 +67,7 @@ fun AppNavigation() {
                 composable(route = "products") { productNavController = ProductNavigation(navController, productViewModel) }
                 composable(route = "cotizaciones") { CotizacionNavigation(navController, cotizacionViewModel, productViewModel, clienteViewModel) }
                 composable(route = "clientes") { ClienteNavigation(navController,clienteViewModel)  }
+                composable(route = "facturas") { VistaFacturas(navController,facturaViewModel)  }
             }
 //        }
     }
