@@ -1,4 +1,4 @@
-package com.example.logistics.ui.dashboard.components
+package com.example.logistics.ui.dashboard.almacen.components
 
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable

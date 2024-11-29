@@ -5,6 +5,7 @@ import com.example.logistics.model.ProductResponse
 import com.example.logistics.data.CategoryChart
 import com.example.logistics.data.ExpiringProduct
 import com.example.logistics.data.LowerStockProduct
+import com.example.logistics.model.ProductMetric
 import retrofit2.Response
 import retrofit2.http.Body
 import retrofit2.http.GET
@@ -53,4 +54,7 @@ interface ProductApiService {
 
     @GET("api/almacen/producto/last-code")
     suspend fun getLastProductCode(): Response<String>
+
+    @GET("/api/almacen/producto/top")
+    suspend fun getTopProducts(): Response<List<ProductMetric>>
 }

@@ -16,6 +16,7 @@ import androidx.navigation.compose.currentBackStackEntryAsState
 import androidx.navigation.compose.rememberNavController
 import com.example.logistics.model.LoginViewModel
 import com.example.logistics.ui.cotizacion.CotizacionViewModel
+import com.example.logistics.ui.dashboard.venta.SalesDashboard
 import com.example.logistics.ui.login.LoginScreen
 import com.example.logistics.ui.product.AddProductScreen
 import com.example.logistics.ui.product.BatchScreen
@@ -56,7 +57,8 @@ fun AppNavigation() {
                 modifier = Modifier.padding(innerPadding)
             ) {
                 composable(route = "login") { LoginScreen(navController, loginViewModel) }
-                composable(route = "menu") {  MenuScreen(navController, loginViewModel, productViewModel) }
+                composable(route = "menu") {  MenuScreen(navController, loginViewModel, productViewModel,cotizacionViewModel) }
+                //composable(route = "menu_venta") { SalesDashboard()  }
                 composable(route = "products") { productNavController = ProductNavigation(navController, productViewModel) }
                 composable(route = "cotizaciones") { CotizacionNavigation(navController, cotizacionViewModel, productViewModel) }
 

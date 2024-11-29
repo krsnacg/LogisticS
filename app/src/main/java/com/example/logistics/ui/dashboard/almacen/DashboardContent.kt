@@ -1,4 +1,4 @@
-package com.example.logistics.ui.dashboard
+package com.example.logistics.ui.dashboard.almacen
 
 import android.util.Log
 import androidx.compose.foundation.layout.Column
@@ -22,11 +22,11 @@ import androidx.navigation.NavController
 import com.example.logistics.R
 import com.example.logistics.data.CategoryChart
 import com.example.logistics.model.EmpleadoDto
-import com.example.logistics.ui.dashboard.components.ExpiringSoonCard
-import com.example.logistics.ui.dashboard.components.LowStockCard
-import com.example.logistics.ui.dashboard.components.OperationsDashboard
-import com.example.logistics.ui.dashboard.components.ProductCategoryChart
-import com.example.logistics.ui.dashboard.components.ProductSummary
+import com.example.logistics.ui.dashboard.almacen.components.ExpiringSoonCard
+import com.example.logistics.ui.dashboard.almacen.components.LowStockCard
+import com.example.logistics.ui.dashboard.almacen.components.OperationsDashboard
+import com.example.logistics.ui.dashboard.almacen.components.ProductCategoryChart
+import com.example.logistics.ui.dashboard.almacen.components.ProductSummary
 import com.example.logistics.ui.product.ProductViewModel
 
 @Composable

@@ -13,7 +13,9 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import androidx.lifecycle.viewmodel.compose.viewModel
 import com.example.logistics.model.Cotizacion
+import com.example.logistics.model.CustomerMetric
 import com.example.logistics.model.Product
+import com.example.logistics.model.SalesMetric
 import com.example.logistics.service.CotizacionService
 import com.google.gson.GsonBuilder
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -43,6 +45,11 @@ class CotizacionViewModel(): ViewModel() {
     private val _selectedCotizacion = MutableStateFlow<Cotizacion?>(null)
     val selectedCotizacion: StateFlow<Cotizacion?> get() = _selectedCotizacion
 
+    private val _topCustomer = MutableStateFlow<List<CustomerMetric>>(emptyList())
+    val topCustomers: StateFlow<List<CustomerMetric>> get() = _topCustomer
+
+    private val _salesData = MutableStateFlow<List<SalesMetric>>(emptyList())
+    val salesData: StateFlow<List<SalesMetric>> get() = _salesData
 
     init {
         val gson = GsonBuilder()
@@ -57,6 +64,28 @@ class CotizacionViewModel(): ViewModel() {
 
         //getLastCotizacionCode()
         //fetchCotizaciones()
+        getTopCustomers()
+        getSalesData()
+    }
+
+    fun getSalesData() {
+        viewModelScope.launch {
+            try {
+                _salesData.value = cotizacionService.getSalesData().body()!!
+            }catch (e: Exception) {
+                Log.e("TOP CUSTOMER ERROR", e.message.toString())
+            }
+        }
+    }
+
+    fun getTopCustomers() {
+        viewModelScope.launch {
+            try {
+                _topCustomer.value = cotizacionService.getTopCustomers().body()!!
+            }catch (e: Exception) {
+                Log.e("TOP CUSTOMER ERROR", e.message.toString())
+            }
+        }
     }
 
     fun getLastCotizacionCode() {

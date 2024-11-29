@@ -1,4 +1,4 @@
-package com.example.logistics.ui.dashboard.components
+package com.example.logistics.ui.dashboard.almacen.components
 
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.fillMaxWidth

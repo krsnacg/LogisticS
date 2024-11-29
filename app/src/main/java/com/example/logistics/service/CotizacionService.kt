@@ -1,6 +1,8 @@
 package com.example.logistics.service
 
 import com.example.logistics.model.Cotizacion
+import com.example.logistics.model.CustomerMetric
+import com.example.logistics.model.SalesMetric
 import okhttp3.ResponseBody
 import retrofit2.Response
 import retrofit2.http.Body
@@ -31,4 +33,10 @@ interface CotizacionService {
 
     @GET("/api/cotizacion/coti-v/pdf/{id}")
     suspend fun generatePDF(@Path("id") id: String): Response<ResponseBody>
+
+    @GET("/api/cotizacion/coti-v/top")
+    suspend fun getTopCustomers(): Response<List<CustomerMetric>>
+
+    @GET("/api/cotizacion/coti-v/salesdata")
+    suspend fun getSalesData(): Response<List<SalesMetric>>
 }

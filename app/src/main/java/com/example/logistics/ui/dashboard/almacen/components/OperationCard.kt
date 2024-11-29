@@ -1,4 +1,4 @@
-package com.example.logistics.ui.dashboard.components
+package com.example.logistics.ui.dashboard.almacen.components
 
 import androidx.compose.animation.core.FastOutSlowInEasing
 import androidx.compose.animation.core.RepeatMode

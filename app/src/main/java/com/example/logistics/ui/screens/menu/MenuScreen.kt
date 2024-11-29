@@ -5,7 +5,6 @@ import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.*
 import androidx.compose.material3.*
 import androidx.compose.runtime.*
-import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.unit.dp
 import kotlinx.coroutines.launch
 import androidx.compose.foundation.layout.Column
@@ -23,13 +22,15 @@ import androidx.navigation.NavController
 import com.example.logistics.R
 import com.example.logistics.model.LoginViewModel
 import com.example.logistics.model.MenuItem
+import com.example.logistics.ui.cotizacion.CotizacionViewModel
 import com.example.logistics.ui.screens.menu.components.DrawerContent
-import com.example.logistics.ui.dashboard.DashboardContent
+import com.example.logistics.ui.dashboard.almacen.DashboardContent
+import com.example.logistics.ui.dashboard.venta.SalesDashboard
 import com.example.logistics.ui.product.ProductViewModel
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun MenuScreen(navController: NavController, loginViewModel: LoginViewModel, productoViewModel: ProductViewModel) {
+fun MenuScreen(navController: NavController, loginViewModel: LoginViewModel, productoViewModel: ProductViewModel, cotizacionViewModel: CotizacionViewModel) {
     val uiState by loginViewModel.uiState.collectAsState()
     val drawerState = rememberDrawerState(initialValue = DrawerValue.Closed)
     val scope = rememberCoroutineScope()
@@ -99,13 +100,22 @@ fun MenuScreen(navController: NavController, loginViewModel: LoginViewModel, pro
                         .fillMaxSize()
                         .padding(paddingValues)
                 ) {
-                    DashboardContent(
-                        modifier = Modifier.fillMaxWidth(),
-                        paddingValues = PaddingValues(0.dp),
-                        empleado = uiState.empleado,
-                        productViewModel = productoViewModel,
-                        navController = navController
-                    )
+                    if( uiState.rol == "ROL_ALMACEN" ) {
+                        DashboardContent(
+                            modifier = Modifier.fillMaxWidth(),
+                            paddingValues = PaddingValues(0.dp),
+                            empleado = uiState.empleado,
+                            productViewModel = productoViewModel,
+                            navController = navController
+                        )
+                    } else {
+                        SalesDashboard(
+                            productViewModel = productoViewModel,
+                            navController = navController,
+                            cotizacionViewModel = cotizacionViewModel
+                        )
+                    }
+
                 }
             }
         )

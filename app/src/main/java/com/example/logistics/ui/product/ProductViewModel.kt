@@ -31,6 +31,7 @@ import com.example.logistics.data.CategoryChart
 import com.example.logistics.data.ExpiringProduct
 import com.example.logistics.data.LowerStockProduct
 import com.example.logistics.model.BatchRequest
+import com.example.logistics.model.ProductMetric
 import com.example.logistics.service.ProductApiService
 import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
@@ -40,6 +41,11 @@ class ProductViewModel(private val productRepository: ProductRepository) : ViewM
 
 //    private val _codeState = MutableStateFlow(value = "")
 //    val codeState: StateFlow<String> = _codeState.asStateFlow()
+
+    private val _topProduct = MutableStateFlow<List<ProductMetric>>(emptyList())
+    val topProducts: StateFlow<List<ProductMetric>> get() = _topProduct
+    /*DASHBOARD VENTA*/
+
     private val _lowerStockProduct = MutableStateFlow<LowerStockProduct?>(null)
     val lowerStockProduct: StateFlow<LowerStockProduct?> get() = _lowerStockProduct
     private val _expiringProduct = MutableStateFlow<ExpiringProduct?>(null)
@@ -116,6 +122,7 @@ class ProductViewModel(private val productRepository: ProductRepository) : ViewM
         getTotalCategorias()
         getTotalLotes()
         getLastCodeProduct()
+        getTopProducts()
     }
 
 
@@ -125,6 +132,16 @@ class ProductViewModel(private val productRepository: ProductRepository) : ViewM
                 val application = (this[APPLICATION_KEY] as ProductApplication)
                 val productRepository = application.container.productRepository
                 ProductViewModel(productRepository = productRepository)
+            }
+        }
+    }
+
+    fun getTopProducts() {
+        viewModelScope.launch {
+            try {
+                _topProduct.value = productService.getTopProducts().body()!!
+            }catch (e: Exception) {
+                Log.e("CANTIDAD TOP PRODUCTS", e.message.toString())
             }
         }
     }
