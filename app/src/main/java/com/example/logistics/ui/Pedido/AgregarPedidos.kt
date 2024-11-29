@@ -40,7 +40,7 @@ fun RegistroPedido(
     ){
     val expandedEstadoEnvio = rememberSaveable { mutableSetOf(false)}
     val expandedMetodoPago = rememberSaveable { mutableSetOf(false) }
-    var opcionSeleccionada = 1//rememberSaveable { mutableSetOf(1)}
+    var opcionSeleccionada = 0//rememberSaveable { mutableSetOf(1)}
     val listaPedidos = listOf(
         "Registrar Pedido",
         "Actualizar Pedido"
@@ -48,7 +48,7 @@ fun RegistroPedido(
     Scaffold (topBar = {
         TopBar(tituloPagina = stringResource(R.string.topbar_opcion2), modo = "Retroceder")
     },
-        bottomBar = { NavigationBarRecepcionista(opcionSeleccionada = 1) }
+        bottomBar = { NavigationBarRecepcionista(opcionSeleccionada = 2) }
     ){paddingValues ->
         LazyColumn (
             modifier = Modifier
@@ -123,7 +123,7 @@ fun RegistroPedido(
                             )
                         },
                         modifier = Modifier
-                            //.clickable { expandedEstadoEnvio.value = true }
+                        //.clickable { expandedEstadoEnvio.value = true }
                     )
                     DropdownMenu(
                         expanded = false,//expandedEstadoEnvio.value,
@@ -159,9 +159,19 @@ fun RegistroPedido(
                                 //expandedEstadoEnvio.value = false
                             }
                         )
+                        DropdownMenuItem(
+                            text = {
+                                Text(
+                                    text = stringResource(R.string.desplegable_estado_envio4),
+                                ) },
+                            onClick = {
+                                //expandedEstadoEnvio.value = false
+                            }
+                        )
                     }
                 }
             }
+
             //Metodo de pago
             item {
                 Box(
@@ -225,6 +235,15 @@ fun RegistroPedido(
                             text = {
                                 Text(
                                     text = stringResource(R.string.desplegable_metodo_pago4),
+                                ) },
+                            onClick = {
+                                //expandedMetodoPago.value = false
+                            }
+                        )
+                        DropdownMenuItem(
+                            text = {
+                                Text(
+                                    text = stringResource(R.string.desplegable_metodo_pago5),
                                 ) },
                             onClick = {
                                 //expandedMetodoPago.value = false

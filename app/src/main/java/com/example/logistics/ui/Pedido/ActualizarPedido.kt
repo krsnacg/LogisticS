@@ -10,8 +10,8 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.AddCircleOutline
-import androidx.compose.material.icons.filled.AddShoppingCart
 import androidx.compose.material.icons.filled.ArrowDropDown
+import androidx.compose.material.icons.filled.Search
 import androidx.compose.material3.Button
 import androidx.compose.material3.DropdownMenu
 import androidx.compose.material3.DropdownMenuItem
@@ -46,7 +46,7 @@ fun ActualizarPedido(
         "Actualizar Pedido"
     )
     Scaffold (topBar = {
-        TopBar(tituloPagina = stringResource(R.string.topbar_opcion3), modo = "Retroceder")
+        TopBar(tituloPagina = stringResource(R.string.topbar_opcion2), modo = "Retroceder")
     },
         bottomBar = { NavigationBarRecepcionista(opcionSeleccionada = 2) }
     ){paddingValues ->
@@ -74,6 +74,27 @@ fun ActualizarPedido(
                         .fillMaxWidth()
                         .padding(start = 20.dp, end = 20.dp, bottom = 20.dp)
                 )
+            }
+            //Boton buscar pedido
+            item {
+
+                //Spacer(modifier = Modifier.padding(5.dp))
+
+                Box(
+                    modifier = Modifier.fillMaxWidth(),
+                    contentAlignment = Alignment.CenterEnd
+                ) {
+                    Button(
+                        onClick = { },
+                        modifier = Modifier.padding(end = 15.dp)
+                    ) {
+                        Icon(
+                            imageVector = Icons.Default.Search,
+                            contentDescription = null
+                        )
+                        Text(text = stringResource(id = R.string.boton_buscar_pedido))
+                    }
+                }
             }
             item {
                 OutlinedTextField(
@@ -196,6 +217,15 @@ fun ActualizarPedido(
                                 //expandedEstadoEnvio.value = false
                             }
                         )
+                        DropdownMenuItem(
+                            text = {
+                                Text(
+                                    text = stringResource(R.string.desplegable_estado_envio4),
+                                ) },
+                            onClick = {
+                                //expandedEstadoEnvio.value = false
+                            }
+                        )
                     }
                 }
             }
@@ -262,6 +292,15 @@ fun ActualizarPedido(
                             text = {
                                 Text(
                                     text = stringResource(R.string.desplegable_metodo_pago4),
+                                ) },
+                            onClick = {
+                                //expandedMetodoPago.value = false
+                            }
+                        )
+                        DropdownMenuItem(
+                            text = {
+                                Text(
+                                    text = stringResource(R.string.desplegable_metodo_pago5),
                                 ) },
                             onClick = {
                                 //expandedMetodoPago.value = false
