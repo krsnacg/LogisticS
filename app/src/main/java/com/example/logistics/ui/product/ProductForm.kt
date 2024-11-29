@@ -49,7 +49,7 @@ fun ProductForm(
     onPresentationChange: (String) -> Unit,
     onDescriptionChange: (String) -> Unit,
     onQuantityChange: (String) -> Unit,
-    onCancelClick: () -> Unit,
+    onUpdateClick: () -> Unit,
     onSaveClick: () -> Unit,
 ) {
 
@@ -162,7 +162,7 @@ fun ProductForm(
             Column {
                 if (!isEditable) {
                     Button(
-                        onClick = onCancelClick,
+                        onClick = onUpdateClick,
                         enabled = isProductUpdatable
                     ) {
                         Icon(imageVector = Icons.AutoMirrored.Filled.Send, contentDescription = null)

@@ -14,7 +14,7 @@ interface ProductContainer {
 }
 
 class DefaultProductContainer: ProductContainer {
-    private val BASE_URL = "${ApiConfig.BASE_URL}:9000/api/almacen/"
+    private val BASE_URL = "${ApiConfig.BASE_URL}:9000/api/"
 
     private val loggingInterceptor = HttpLoggingInterceptor().apply {
         level = HttpLoggingInterceptor.Level.BODY

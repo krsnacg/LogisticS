@@ -60,7 +60,7 @@ fun AddProductScreen(navController: NavController, viewModel: ProductViewModel =
             onPresentationChange = { viewModel.updateProductPresentation(it) },
             onDescriptionChange = { viewModel.updateProductDescription(it) },
             onQuantityChange = { viewModel.updateProductQuantity(it) },
-            onCancelClick = {
+            onUpdateClick = {
                 viewModel.updateProductAndBatches()
                 showDialog = true
             },

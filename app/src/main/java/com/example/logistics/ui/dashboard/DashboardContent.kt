@@ -98,7 +98,13 @@ fun DashboardContent(
                     }
                 }
                 "Gestionar lotes" -> {}
-                "Generar guía de remisión" -> {}
+                "Generar guía de remisión" -> {
+                    try {
+                        navController.navigate("referralGuideList")
+                    } catch (e: Exception) {
+                        Log.e("NavigationError", "Error navigating: ${e.message}")
+                    }
+                }
             }
         }
 

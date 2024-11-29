@@ -21,13 +21,16 @@ import com.example.logistics.ui.product.BatchScreen
 import com.example.logistics.ui.product.EditProductScreen
 import com.example.logistics.ui.screens.menu.MenuScreen
 import com.example.logistics.ui.product.ProductViewModel
+import com.example.logistics.ui.product.ReferralGuideListScreen
+import com.example.logistics.ui.product.ReferralGuideScreen
+import com.example.logistics.ui.product.ReferralViewModel
 
 
 @Composable
 fun AppNavigation() {
     val navController = rememberNavController()
     val productViewModel: ProductViewModel = viewModel(factory = ProductViewModel.Factory)
-
+    val referralViewModel: ReferralViewModel = viewModel(factory = ReferralViewModel.Factory)
     val loginViewModel: LoginViewModel = viewModel()
 
     var productNavController by remember { mutableStateOf<NavController?>(null) }
@@ -53,8 +56,15 @@ fun AppNavigation() {
             ) {
                 composable(route = "login") { LoginScreen(navController, loginViewModel) }
                 composable(route = "menu") {  MenuScreen(navController, loginViewModel, productViewModel) }
-                composable(route = "products") { productNavController = ProductNavigation(navController, productViewModel) }
-
+                composable(route = "products") {
+                    productNavController = ProductNavigation(navController, productViewModel)
+                }
+                composable(route = "referralGuideList") {
+                    ReferralGuideListScreen(navController, productViewModel, referralViewModel)
+                }
+                composable(route = "referralGuide") {
+                    ReferralGuideScreen(navController, referralViewModel)
+                }
             }
 //        }
     }

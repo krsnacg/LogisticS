@@ -5,6 +5,7 @@ import com.example.logistics.model.ProductResponse
 import com.example.logistics.data.CategoryChart
 import com.example.logistics.data.ExpiringProduct
 import com.example.logistics.data.LowerStockProduct
+import com.example.logistics.model.ReferralGuide
 import retrofit2.Response
 import retrofit2.http.Body
 import retrofit2.http.GET
@@ -13,28 +14,37 @@ import retrofit2.http.PUT
 import retrofit2.http.Path
 
 interface ProductApiService {
-    @GET("producto/listar")
+    @GET("almacen/producto/listar")
     suspend fun getAllProducts(): Response<List<ProductResponse>>
 
-    @POST("producto/guardar-p")
+    @GET("almacen/guias/listar")
+    suspend fun getAllReferralGuides(): Response<List<ReferralGuide>>
+
+    @POST("almacen/producto/guardar-p")
     suspend fun saveProductWithBatches(@Body product: ProductRequest): Response<ProductResponse>
 
-    @PUT("producto/actualizar-p")
+    @POST("almacen/guias/save")
+    suspend fun saveReferralGuide(@Body referralGuide: ReferralGuide): Response<ReferralGuide>
+
+    @PUT("almacen/producto/actualizar-p")
     suspend fun updateProductWithBatches(@Body product: ProductRequest): Response<ProductRequest>
 
-    @GET("producto/buscar-producto/{id}")
+    @GET("almacen/producto/buscar-producto/{id}")
     suspend fun getProductWithBatches(@Path("id") id: String): Response<ProductRequest>
 
-    @GET("producto/last-code")
+    @GET("almacen/producto/last-code")
     suspend fun getProductLastCode(): Response<String> // Response<Map<String,String>>
 
-    @GET("lotes/last-code")
+    @GET("almacen/lotes/last-code")
     suspend fun getBatchLastCode(): Response<String> // Response<Map<String,String>>
 
-    @GET("formas/for-com")
+    @GET("almacen/guias/lastcode")
+    suspend fun getReferralLastCode(): Response<String>
+
+    @GET("almacen/formas/for-com")
     suspend fun getFormas(): Response<List<String>>
 
-    @GET("categorias/cat-com")
+    @GET("almacen/categorias/cat-com")
     suspend fun getCategories(): Response<List<String>>
 
     @GET("api/almacen/producto/lowerstock")

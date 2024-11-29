@@ -216,7 +216,6 @@ fun DatePickerField(
                 }
             },
             modifier = Modifier
-                .fillMaxWidth()
                 .height(64.dp)
         )
         if (showDatePicker) {
